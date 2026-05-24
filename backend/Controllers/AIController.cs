@@ -15,12 +15,12 @@ namespace JobTracker.Controllers
         }
 
         [HttpPost("cv-match")]
-        public async Task<IActionResult> CvMatchAsync([FromForm] string? cvText, [FromForm] string jobOfferText)
+        public async Task<IActionResult> CvMatchAsync([FromForm] IFormFile? cvFile, [FromForm] string? cvText, [FromForm] string jobOfferText)
         {
-            if (string.IsNullOrWhiteSpace(cvText))
-                return BadRequest("Debe proveer el texto del CV.");
+            if (string.IsNullOrWhiteSpace(cvText) && cvFile == null)
+                return BadRequest("Debe proveer el texto del CV o un archivo.");
 
-            var result = await _aiAnalysisService.CvMatchAsync(null, cvText, jobOfferText);
+            var result = await _aiAnalysisService.CvMatchAsync(cvFile, cvText, jobOfferText);
             return Ok(result);
         }
     }
