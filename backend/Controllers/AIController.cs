@@ -23,5 +23,12 @@ namespace JobTracker.Controllers
             var result = await _aiAnalysisService.CvMatchAsync(cvFile, cvText, jobOfferText);
             return Ok(result);
         }
+
+        [HttpGet("application-insights/{applicationId}")]
+        public async Task<IActionResult> GetApplicationInsightsAsync(int applicationId)
+        {
+                var insights = await _aiAnalysisService.GetApplicationInsightsAsync(applicationId);
+                return Ok(new { Insights = insights });
+        }
     }
 }

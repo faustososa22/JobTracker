@@ -5,16 +5,22 @@ using JobTracker.Dtos;
 using Anthropic.Core;
 using Anthropic.Models.Beta.Files;
 using Anthropic.Models.Beta.Messages;
+using JobTracker.Repositories;
+using JobTracker.Models;
 
 namespace JobTracker.Services
 {
     public class AIAnalysisService : IAIAnalysisService
     {
         private readonly AnthropicClient _anthropicClient;
+        private readonly IApplicationRepository _applicationRepository;
+        private readonly IStatusHistoryRepository _statusHistoryRepository;
 
-        public AIAnalysisService(AnthropicClient anthropicClient)
+        public AIAnalysisService(AnthropicClient anthropicClient, IApplicationRepository applicationRepository, IStatusHistoryRepository statusHistoryRepository)
         {
             this._anthropicClient = anthropicClient;
+            this._applicationRepository = applicationRepository;
+            this._statusHistoryRepository = statusHistoryRepository;
         }
         public async Task<CvMatchResults> CvMatchAsync(IFormFile? cvFile, string? cvText, string jobOfferText)
         {
@@ -136,5 +142,40 @@ namespace JobTracker.Services
             });
             return result ?? new CvMatchResults();
         }
+
+        public async Task<string> GetApplicationInsightsAsync(int applicationId)
+        {
+            var application = await _applicationRepository.GetByIdAsync(applicationId);
+            if (application == null) throw new ArgumentException("Aplicación no encontrada.");
+
+            var statusHistory = await _statusHistoryRepository.GetStatusHistoryByApplicationIdAsync(applicationId);
+
+            var prompt = BuildInsightsPrompt(application, statusHistory);
+            var response = await _anthropicClient.Messages.Create(new Anthropic.Models.Messages.MessageCreateParams
+            {
+                Model = "claude-sonnet-4-6",
+                MaxTokens = 1024,
+                Messages = [new() { Role = Anthropic.Models.Messages.Role.User, Content = prompt }]
+            });
+            response.Content[0].TryPickText(out var textBlock);
+            return textBlock?.Text.Trim() ?? "No se pudieron generar insights para esta aplicación.";
+        }
+
+        private string BuildInsightsPrompt(Application application, List<StatusHistory> statusHistory)
+        {
+            var historial = string.Join("\n", statusHistory.Select(sh => $"- {sh.Status} el {sh.ChangedAt:dd/MM/yyyy}"));
+            return $$"""
+                Analizá el siguiente historial de una aplicación laboral y dá recomendaciones concretas.
+                Respondé en texto plano, sin markdown.
+
+                Empresa: {{application.CompanyName}}
+                Puesto: {{application.JobTitle}}
+                Descripción: {{application.Description}}
+
+                Historial de estados:
+                {{historial}}
+                """;
+        }
+        
     }
 }

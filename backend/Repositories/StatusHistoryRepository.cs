@@ -34,6 +34,11 @@ namespace JobTracker.Repositories
             return await _context.StatusHistories.ToListAsync();
         }
 
+        public async Task<List<StatusHistory>> GetStatusHistoryByApplicationIdAsync(int applicationId)
+        {
+            return await _context.StatusHistories.Where(sh => sh.ApplicationId == applicationId).ToListAsync();
+        }
+
         public async Task<StatusHistory?> GetStatusHistoryByIdAsync(int id)
         {
             return await _context.StatusHistories.FindAsync(id);
