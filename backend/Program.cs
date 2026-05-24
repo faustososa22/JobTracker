@@ -17,6 +17,8 @@ builder.Services.AddDbContext<JobTrackerContext>(options =>
 
 builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
 builder.Services.AddScoped<IApplicationService, ApplicationService>();
+builder.Services.AddScoped<IStatusHistoryRepository, StatusHistoryRepository>();
+builder.Services.AddScoped<IStatusHistoryService, StatusHistoryService>();
 
 var app = builder.Build();
 
