@@ -1,3 +1,5 @@
+using Anthropic;
+using Anthropic.Core;
 using JobTracker.Data;
 using JobTracker.Repositories;
 using JobTracker.Services;
@@ -19,6 +21,10 @@ builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
 builder.Services.AddScoped<IApplicationService, ApplicationService>();
 builder.Services.AddScoped<IStatusHistoryRepository, StatusHistoryRepository>();
 builder.Services.AddScoped<IStatusHistoryService, StatusHistoryService>();
+builder.Services.AddScoped<IAIAnalysisService, AIAnalysisService>();
+//Anthropic API client
+builder.Services.AddScoped(sp => new AnthropicClient { ApiKey = builder.Configuration["Anthropic:ApiKey"]! });
+
 
 var app = builder.Build();
 
