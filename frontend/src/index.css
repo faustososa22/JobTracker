@@ -1,0 +1,10 @@
+body {
+  margin: 0;
+  background-color: #f0f2f5;
+  font-family: 'Poppins', sans-serif;
+  --bs-body-font-family: 'Poppins', sans-serif;
+}
+
+#root {
+  min-height: 100vh;
+}
