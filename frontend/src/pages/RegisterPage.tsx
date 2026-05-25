@@ -8,16 +8,27 @@ export function RegisterPage(){
     const [lastName, setLastname] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [error, setError] = useState('')
     const navigate = useNavigate()
 
     const handleSubmit = async (e: React.SyntheticEvent) => {
+        setError('')
         e.preventDefault()
-        const token = await register(name, lastName, email, password)
-        if (token){
-            localStorage.setItem('token', token)
+        if(!name || !lastName || !email || !password){
+            setError('All fields are required')
+            return
+        }
+        if (password.length < 6) {
+            setError('Password must be at least 6 characters.')
+            return
+          }
+          
+        const result = await register(name, lastName, email, password)
+        if (result.token){
+            localStorage.setItem('token', result.token)
             navigate('/applications')
         }else{
-            alert('Internal Error')
+            setError(result.error ?? 'Something went wrong.')
         }
     }
 
@@ -61,6 +72,10 @@ export function RegisterPage(){
                         onChange={e => setPassword(e.target.value)}/>
                 </div>
                 <button type="submit" className="btn btn-primary w-100">Register</button>
+                {error && <p className="text-danger mt-2">{error}</p>}
+                <p className="text-center mt-3">
+                    Already have an account? <a href="/login" className="text-decoration-none fw-bold  ">Log in</a>
+                </p>
             </form>
             </div>
             

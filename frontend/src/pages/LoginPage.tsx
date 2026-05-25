@@ -6,16 +6,22 @@ export function LoginPage(){
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [error, setError] = useState('')
     const navigate = useNavigate()
 
     const handleSubmit = async (e: React.SyntheticEvent) => {
+        setError('')
         e.preventDefault()
-        const token = await login(email, password)
-        if (token){
-            localStorage.setItem('token', token)
+        if(!email || !password){
+            setError('All fields are required')
+            return
+        }
+        const result = await login(email, password)
+        if (result.token){
+            localStorage.setItem('token', result.token)
             navigate('/applications')
         }else{
-            alert('Incorrect Email or Password')
+            setError(result.error ?? 'Something went wrong.')
         }
     }
 
@@ -43,8 +49,10 @@ export function LoginPage(){
                         onChange={e => setPassword(e.target.value)}/>
                 </div>
                 <button type="submit" className="btn btn-primary w-100">Ingresar</button>
+                {error && <p className="text-danger mt-2">{error}</p>}
+
                 <p className="text-center mt-3">
-                    Don't have an account? <a href="/register" className="text-decoration-none fw-bold">Register</a>
+                    Don't have an account? <a href="/register" className="text-decoration-none fw-bold  ">Register</a>
                 </p>
             </form>
             </div>
