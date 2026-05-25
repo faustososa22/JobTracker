@@ -9,5 +9,6 @@ namespace JobTracker.Repositories
         Task<StatusHistory> CreateStatusHistoryAsync(StatusHistory statusHistory);
         Task<bool> DeleteStatusHistoryAsync(int id);
         Task<List<StatusHistory>> GetStatusHistoryByApplicationIdAsync(int applicationId);
+        
     }
 }

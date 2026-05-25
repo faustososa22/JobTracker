@@ -1,10 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace JobTracker.Models
+namespace JobTracke.DTOs
 {
-    public class User
+    public class RegisterRequest
     {
-        public int Id { get; set; }
         [Required]
         public required string Name { get; set; }
         [Required]
@@ -14,6 +13,6 @@ namespace JobTracker.Models
         public required string Email { get; set; }
         [Required]
         [MinLength(6)]
-        public required string PasswordHash { get; set; }
+        public required string Password { get; set; }
     }
 }

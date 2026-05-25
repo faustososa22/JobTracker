@@ -28,7 +28,7 @@ namespace JobTracker.Controllers
         public async Task<IActionResult> GetByIdAsync(int id)
         {
             var application = await _applicationService.GetApplicationByIdAsync(id, GetUserId());
-            if (application == null) return NotFound();
+            if (application == null) return NotFound(new { message = "Application not found." });
             return Ok(application);
         }
 
@@ -43,16 +43,23 @@ namespace JobTracker.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAsync(int id, [FromBody]Application application)
         {
-            if (id != application.Id) return BadRequest();
-            var updatedApplication = await _applicationService.UpdateApplicationAsync(application, GetUserId());
-            return Ok(updatedApplication);
+            if (id != application.Id) return BadRequest(new { message = "ID mismatch." });
+            try
+            {
+                var updatedApplication = await _applicationService.UpdateApplicationAsync(application, GetUserId());
+                return Ok(updatedApplication);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound(new { message = "Application not found." });
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
             var success = await _applicationService.DeleteApplicationAsync(id, GetUserId());
-            if (!success) return NotFound();
+            if (!success) return NotFound(new { message = "Application not found." });
             return NoContent();
         }
 

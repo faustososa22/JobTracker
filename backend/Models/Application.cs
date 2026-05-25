@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace JobTracker.Models
 {
     public class Application
@@ -5,8 +7,11 @@ namespace JobTracker.Models
         public int Id { get; set; }
         public int UserId { get; set; }
         public User? User { get; set; }
+        [Required]
         public required string CompanyName { get; set; }
+        [Required]
         public required string JobTitle { get; set; }
+        [Required]
         public required string Description { get; set; }
         public DateTimeOffset AppliedDate { get; set; }
         public DateTimeOffset LastUpdated { get; set; }

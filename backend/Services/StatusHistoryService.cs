@@ -27,6 +27,11 @@ namespace JobTracker.Services
             return await _statusHistoryRepository.GetAllStatusHistoriesAsync();
         }
 
+        public Task<List<StatusHistory>> GetStatusHistoryByApplicationIdAsync(int applicationId)
+        {
+            return _statusHistoryRepository.GetStatusHistoryByApplicationIdAsync(applicationId);
+        }
+
         public async Task<StatusHistory?> GetStatusHistoryByIdAsync(int id)
         {
             return await _statusHistoryRepository.GetStatusHistoryByIdAsync(id);

@@ -6,6 +6,7 @@ namespace JobTracker.Services
     {
         Task<List<StatusHistory>> GetAllStatusHistoriesAsync();
         Task<StatusHistory?> GetStatusHistoryByIdAsync(int id);
+        Task<List<StatusHistory>> GetStatusHistoryByApplicationIdAsync(int applicationId);
         Task<StatusHistory> CreateStatusHistoryAsync(StatusHistory statusHistory);
         Task<bool> DeleteStatusHistoryAsync(int id);
     }
