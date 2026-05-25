@@ -1,10 +1,13 @@
+using System.Security.Claims;
 using JobTracker.Models;
 using JobTracker.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobTracker.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class ApplicationsController: ControllerBase
     {
@@ -18,13 +21,13 @@ namespace JobTracker.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllAsync()
         {
-            var applications = await _applicationService.GetAllApplicationsAsync();
+            var applications = await _applicationService.GetAllApplicationsAsync(GetUserId());
             return Ok(applications);
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetByIdAsync(int id)
         {
-            var application = await _applicationService.GetApplicationByIdAsync(id);
+            var application = await _applicationService.GetApplicationByIdAsync(id, GetUserId());
             if (application == null) return NotFound();
             return Ok(application);
         }
@@ -32,6 +35,7 @@ namespace JobTracker.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateAsync([FromBody]Application application)
         {
+            application.UserId = GetUserId();
             var createdApplication = await _applicationService.CreateApplicationAsync(application);
             return CreatedAtAction(nameof(GetByIdAsync), new { id = createdApplication.Id }, createdApplication);
         }
@@ -40,16 +44,21 @@ namespace JobTracker.Controllers
         public async Task<IActionResult> UpdateAsync(int id, [FromBody]Application application)
         {
             if (id != application.Id) return BadRequest();
-            var updatedApplication = await _applicationService.UpdateApplicationAsync(application);
+            var updatedApplication = await _applicationService.UpdateApplicationAsync(application, GetUserId());
             return Ok(updatedApplication);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
-            var success = await _applicationService.DeleteApplicationAsync(id);
+            var success = await _applicationService.DeleteApplicationAsync(id, GetUserId());
             if (!success) return NotFound();
             return NoContent();
+        }
+
+        private int GetUserId()
+        {
+            return int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
         }
 
     }

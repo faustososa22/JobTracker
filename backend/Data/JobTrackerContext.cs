@@ -12,5 +12,6 @@ namespace JobTracker.Data
         public DbSet<Application> Applications { get; set; }
         public DbSet<AIAnalysis> AIAnalyses { get; set; }
         public DbSet<StatusHistory> StatusHistories { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

@@ -1,10 +1,12 @@
 using JobTracker.Models;
 using JobTracker.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobTracker.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class StatusHistoriesController: ControllerBase
     {

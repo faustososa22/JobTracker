@@ -4,10 +4,10 @@ namespace JobTracker.Services
 {
     public interface IApplicationService
     {
-        Task<List<Application>> GetAllApplicationsAsync();
-        Task<Application?> GetApplicationByIdAsync(int id);
+        Task<List<Application>> GetAllApplicationsAsync(int userId);
+        Task<Application?> GetApplicationByIdAsync(int id, int userId);
         Task<Application> CreateApplicationAsync(Application application);
-        Task<Application> UpdateApplicationAsync(Application application);
-        Task<bool> DeleteApplicationAsync(int id);
+        Task<Application> UpdateApplicationAsync(Application application, int userId);
+        Task<bool> DeleteApplicationAsync(int id, int userId);
     }
 }

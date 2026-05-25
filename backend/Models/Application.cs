@@ -3,6 +3,8 @@ namespace JobTracker.Models
     public class Application
     {
         public int Id { get; set; }
+        public int UserId { get; set; }
+        public User? User { get; set; }
         public required string CompanyName { get; set; }
         public required string JobTitle { get; set; }
         public required string Description { get; set; }

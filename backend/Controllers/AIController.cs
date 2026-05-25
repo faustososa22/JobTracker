@@ -1,9 +1,11 @@
 using JobTracker.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobTracker.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class AIController : ControllerBase
     {
@@ -25,9 +27,9 @@ namespace JobTracker.Controllers
         }
 
         [HttpGet("application-insights/{applicationId}")]
-        public async Task<IActionResult> GetApplicationInsightsAsync(int applicationId)
+        public async Task<IActionResult> GetApplicationInsightsAsync(int applicationId, int userId)
         {
-                var insights = await _aiAnalysisService.GetApplicationInsightsAsync(applicationId);
+                var insights = await _aiAnalysisService.GetApplicationInsightsAsync(applicationId, userId);
                 return Ok(new { Insights = insights });
         }
     }

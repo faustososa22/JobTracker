@@ -19,9 +19,9 @@ namespace JobTracker.Repositories
             return application;
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id, int userId)
         {
-            var application = await _context.Applications.FindAsync(id);
+            var application = await _context.Applications.FirstOrDefaultAsync(a => a.Id == id && a.UserId == userId);
             if (application == null) return false;
 
             _context.Applications.Remove(application);
@@ -29,21 +29,27 @@ namespace JobTracker.Repositories
             return true;
         }
 
-        public async Task<List<Application>> GetAllAsync()
+        public async Task<List<Application>> GetAllAsync(int userId)
         {
-            return await _context.Applications.ToListAsync();
+            return await _context.Applications.Where(a => a.UserId == userId).ToListAsync();
         }
 
-        public async Task<Application?> GetByIdAsync(int id)
+        public async Task<Application?> GetByIdAsync(int id, int userId)
         {
-            return await _context.Applications.FindAsync(id);
+            return await _context.Applications.FirstOrDefaultAsync(a => a.Id == id && a.UserId == userId);
         }
 
-        public async Task<Application> UpdateAsync(Application application)
+        public async Task<Application> UpdateAsync(Application application, int userId)
         {
-            _context.Applications.Update(application);
+            var existingApplication = await _context.Applications.FirstOrDefaultAsync(a => a.Id == application.Id && a.UserId == userId);
+            if (existingApplication == null) throw new Exception("Application not found or access denied.");
+            existingApplication.CompanyName = application.CompanyName;
+            existingApplication.JobTitle = application.JobTitle;
+            existingApplication.Description = application.Description;
+            existingApplication.Status = application.Status;
+            existingApplication.LastUpdated = application.LastUpdated;
             await _context.SaveChangesAsync();
-            return application;
+            return existingApplication;
         }
     }
 }

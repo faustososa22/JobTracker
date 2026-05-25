@@ -18,26 +18,26 @@ namespace JobTracker.Services
             return await _applicationRepository.CreateAsync(application);
         }
 
-        public async Task<bool> DeleteApplicationAsync(int id)
+        public async Task<bool> DeleteApplicationAsync(int id, int userId)
         {
-            return await _applicationRepository.DeleteAsync(id);
+            return await _applicationRepository.DeleteAsync(id, userId);
         }
 
-        public async Task<List<Application>> GetAllApplicationsAsync()
+        public async Task<List<Application>> GetAllApplicationsAsync(int userId)
         {
-            return await _applicationRepository.GetAllAsync();
+            return await _applicationRepository.GetAllAsync(userId);
         }
 
-        public async Task<Application?> GetApplicationByIdAsync(int id)
+        public async Task<Application?> GetApplicationByIdAsync(int id, int userId)
         {
-            return await _applicationRepository.GetByIdAsync(id);
+            return await _applicationRepository.GetByIdAsync(id, userId);
         }
 
-        public async Task<Application> UpdateApplicationAsync(Application application)
+        public async Task<Application> UpdateApplicationAsync(Application application, int userId)
         {
             application.AppliedDate = application.AppliedDate.ToUniversalTime();
             application.LastUpdated = application.LastUpdated.ToUniversalTime();
-            return await _applicationRepository.UpdateAsync(application);
+            return await _applicationRepository.UpdateAsync(application, userId);
         }
     }
 }

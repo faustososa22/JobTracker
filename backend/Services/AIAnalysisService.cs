@@ -143,9 +143,9 @@ namespace JobTracker.Services
             return result ?? new CvMatchResults();
         }
 
-        public async Task<string> GetApplicationInsightsAsync(int applicationId)
+        public async Task<string> GetApplicationInsightsAsync(int applicationId, int userId)
         {
-            var application = await _applicationRepository.GetByIdAsync(applicationId);
+            var application = await _applicationRepository.GetByIdAsync(applicationId, userId);
             if (application == null) throw new ArgumentException("Aplicación no encontrada.");
 
             var statusHistory = await _statusHistoryRepository.GetStatusHistoryByApplicationIdAsync(applicationId);
