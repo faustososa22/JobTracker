@@ -1,6 +1,5 @@
 using System.Security.Claims;
 using JobTracker.Models;
-using JobTracker.Repositories;
 using JobTracker.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -46,7 +45,7 @@ namespace JobTracker.Controllers
         public async Task<IActionResult> CreateAsync([FromBody]StatusHistory statusHistory)
         {
             var application = await _applicationService.GetApplicationByIdAsync(statusHistory.ApplicationId, GetUserId());
-            if (application == null) return NotFound("Application not found");
+            if (application == null) return NotFound(new { message = "Application not found." });
             var createdStatusHistory = await _statusHistoryService.CreateStatusHistoryAsync(statusHistory);
             return CreatedAtAction(nameof(GetByIdAsync), new { id = createdStatusHistory.Id }, createdStatusHistory);
         }

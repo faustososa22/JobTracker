@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace JobTracke.DTOs
+namespace JobTracker.DTOs
 {
     public class RegisterRequest
     {
