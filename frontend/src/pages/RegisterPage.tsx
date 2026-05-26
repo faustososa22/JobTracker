@@ -36,7 +36,7 @@ export function RegisterPage(){
         <div className="d-flex align-items-center justify-content-center vh-100">
 
             <div className="card shadow p-4" style={{width: '400px'}}>
-            <h4 className="text-center mb-4 fw-bold">Job Tracker</h4>
+            <h4 className="text-center mb-2 fw-bold">Job Tracker</h4>
             <h2 className="mb-4">Register</h2>
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">

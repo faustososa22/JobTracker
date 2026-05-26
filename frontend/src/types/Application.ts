@@ -8,7 +8,7 @@ export interface Application{
     companyName: string,
     jobTitle: string,
     description: string,
-    appliedDate: Date,
-    lastUpdated: Date,
+    appliedDate: string,
+    lastUpdated: string,
     status: ApplicationStatus
 }

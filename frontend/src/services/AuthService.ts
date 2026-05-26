@@ -1,9 +1,5 @@
-import axios from "axios"
 import type { AuthResult } from "../types/AuthResult"
-
-const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL
-})
+import api from "./api"
 
 export const login = async (email: string, password: string): Promise<AuthResult> =>{
     try{

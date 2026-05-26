@@ -6,7 +6,7 @@ export interface StatusHistory{
     application?: Application,
     applicationId: number,
     status: ApplicationStatus,
-    changedAt: Date,
+    changedAt: string,
     notes?: string
 
 }
