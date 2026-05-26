@@ -7,6 +7,7 @@ import { Navbar } from './components/Navbar'
 import { CreateApplicationPage } from './pages/CreateApplicationPage'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import { CvMatchPage } from './pages/CvMatchPage'
+import { EditApplicationPage } from './pages/EditApplicationPage'
 
 function AppLayout() {
     const location = useLocation()
@@ -19,6 +20,7 @@ function AppLayout() {
             <Route path="/register" element={<RegisterPage/>} />
             <Route path="/applications" element={<ProtectedRoute><ApplicationsPage/></ProtectedRoute>} />
             <Route path="/applications/create" element={<ProtectedRoute><CreateApplicationPage/></ProtectedRoute>} />
+            <Route path='/applications/:id/edit' element={<ProtectedRoute><EditApplicationPage/></ProtectedRoute>}/>
             <Route path="/applications/:id" element={<ProtectedRoute><ApplicationDetailPage/></ProtectedRoute>} />
             <Route path="/cv-match" element={<ProtectedRoute><CvMatchPage/></ProtectedRoute>} />
             <Route path="/" element={<div>Home</div>} />

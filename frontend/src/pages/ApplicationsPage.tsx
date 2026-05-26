@@ -77,13 +77,14 @@ export function ApplicationsPage(){
                                     <p className="card-text me-4">
                                         <small className="text-muted">Applied: {new Date(app.appliedDate).toLocaleDateString('en-GB')}</small>
                                     </p>
-                                    <span className={`badge ${getStatusBadgeColor(app.status)}`}>{getStatusLabel(app.status)}</span>
-                                    <div className="d-flex justify-content-end mt-2">
-                                        <button
-                                            className="btn btn-sm btn-outline-danger"
-                                            onClick={e => handleDelete(e, app.id)}>
-                                            Delete
-                                        </button>
+                                    <div className="d-flex justify-content-between align-items-center mt-2">
+                                        <span className={`badge ${getStatusBadgeColor(app.status)}`}>
+                                            {getStatusLabel(app.status)}
+                                        </span>
+                                        <div className="d-flex gap-2">
+                                            <button className="btn btn-sm btn-outline-secondary" onClick={e => { e.stopPropagation(); navigate(`/applications/${app.id}/edit`) }}>Edit</button>
+                                            <button className="btn btn-sm btn-outline-danger" onClick={e => handleDelete(e, app.id)}>Delete</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
