@@ -17,6 +17,7 @@ namespace JobTracker.Services
         {
             application.AppliedDate = application.AppliedDate.ToUniversalTime();
             application.LastUpdated = application.LastUpdated.ToUniversalTime();
+            
             var created = await _applicationRepository.CreateAsync(application);
 
             await _statusHistoryRepository.CreateStatusHistoryAsync(new StatusHistory
@@ -26,7 +27,7 @@ namespace JobTracker.Services
                 ChangedAt = DateTimeOffset.UtcNow,
                 Notes = "Application created"
             });
-            
+
             return created;
         }
 
