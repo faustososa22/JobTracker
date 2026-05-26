@@ -14,22 +14,24 @@ export function ApplicationDetailPage(){
     const [newStatus, setNewStatus] = useState<ApplicationStatus>(ApplicationStatus.Applied)
     const [newNotes, setNewNotes] = useState('')
     const [ insights, setInsights ] = useState<string | undefined>(undefined)
+    const [ loading, setLoading ] = useState(true)
+    const [loadingInsights, setLoadingInsights] = useState(false)
 
 
     const navigate = useNavigate()
     const { id } = useParams()    
 
     useEffect(() => {
-        const fetchApplication = async () => {
-            const result = await getByIdAsync(parseInt(id!))
-            if(result.data) setApplication(result.data)
+        const fetchData = async () => {
+            const [appResult, historyResult] = await Promise.all([
+                getByIdAsync(parseInt(id!)),
+                getByApplicationId(parseInt(id!))
+            ])
+            if(appResult.data) setApplication(appResult.data)
+            if(historyResult.data) setStatusHistory(historyResult.data)
+            setLoading(false)
         }
-        const fetchStatusHistory = async () => {
-            const result = await getByApplicationId(parseInt(id!))
-            if (result.data) setStatusHistory(result.data)
-        }
-        fetchApplication()
-        fetchStatusHistory()
+        fetchData()
     }, [id])
 
     const handleAddStatus = async () => {
@@ -53,14 +55,22 @@ export function ApplicationDetailPage(){
     }
 
     const handleGetInsights = async () => {
+        setLoadingInsights(true)
         const result = await getApplicationInsightsAsync(parseInt(id!))
         if (result.data) setInsights(result.data)
+        setLoadingInsights(false)
     }
 
     const handleDeleteStatus = async (statusId: number) => {
         await deleteStatus(statusId)
         setStatusHistory(prev => prev.filter(e => e.id !== statusId))
     }
+
+    if (loading) return (
+        <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '400px' }}>
+            <div className="spinner-border text-primary" style={{ width: '3rem', height: '3rem' }} role="status" />
+        </div>
+    )
 
     return <>
         <div className="container mt-4" style={{maxWidth: '800px'}}>
@@ -131,11 +141,17 @@ export function ApplicationDetailPage(){
             <div className="card shadow-sm p-4 mt-4 mb-4">
                 <div className="d-flex justify-content-between align-items-center mb-3">
                     <h5 className="fw-bold mb-0">AI Insights</h5>
-                    <button className="btn btn-primary btn-sm" onClick={handleGetInsights}>Get Insights</button>
+                    <button className="btn btn-primary btn-sm" onClick={handleGetInsights} disabled={loadingInsights}>
+                        {loadingInsights
+                            ? <span className="spinner-border spinner-border-sm" role="status" />
+                            : 'Get Insights'
+                        }
+                    </button>
                 </div>
                 {insights
                     ? <p style={{ whiteSpace: 'pre-line' }}>{insights}</p>
-                    : <p className="text-muted">Click "Get Insights" to analyse this application.</p>}
+                    : <p className="text-muted">Click "Get Insights" to analyse this application.</p>
+                }
             </div>
         </div>
     </>

@@ -9,17 +9,20 @@ export function CvMatchPage(){
     const [ usePdf, setUsePdf ] = useState(false)
     const [ result, setResult ] = useState<CvMatchResults | undefined>(undefined)
     const [ error, setError ] = useState('')
+    const [ loading, setLoading ] = useState(false)
 
     const handleSubmit = async (e: React.SyntheticEvent) => {
         e.preventDefault()
         setError('')
         setResult(undefined)
+        setLoading(true)
         const response = await cvMatchAsync(jobOfferText, usePdf ? undefined : cvText, usePdf ? cvFile : undefined)
         if (response.error) {
             setError(response.error)
-            return
+        } else {
+            setResult(response.data)
         }
-        setResult(response.data)
+        setLoading(false)
     }
 
     return (
@@ -49,7 +52,12 @@ export function CvMatchPage(){
                                 : <input type="file" className="form-control" accept=".pdf" onChange={e => setCvFile(e.target.files?.[0])} />
                             }
                         </div>
-                        <button type="submit" className="btn btn-primary">Analyze</button>
+                        <button type="submit" className="btn btn-primary" disabled={loading}>
+                            {loading
+                                ? <span className="spinner-border spinner-border-sm" role="status" />
+                                : 'Analyze'
+                            }
+                        </button>
                     </form>
                 </div>
             </div>
