@@ -5,6 +5,7 @@ import { ApplicationsPage } from './pages/ApplicationsPage'
 import { ApplicationDetailPage } from './pages/ApplicationDetailPage'
 import { Navbar } from './components/Navbar'
 import { CreateApplicationPage } from './pages/CreateApplicationPage'
+import { ProtectedRoute } from './components/ProtectedRoute'
 
 function AppLayout() {
     const location = useLocation()
@@ -15,9 +16,9 @@ function AppLayout() {
         <Routes>
             <Route path="/login" element={<LoginPage/>} />
             <Route path="/register" element={<RegisterPage/>} />
-            <Route path="/applications" element={<ApplicationsPage/>} />
-            <Route path="/applications/create" element={<CreateApplicationPage/>} />
-            <Route path="/applications/:id" element={<ApplicationDetailPage/>} />
+            <Route path="/applications" element={<ProtectedRoute><ApplicationsPage/></ProtectedRoute>} />
+            <Route path="/applications/create" element={<ProtectedRoute><CreateApplicationPage/></ProtectedRoute>} />
+            <Route path="/applications/:id" element={<ProtectedRoute><ApplicationDetailPage/></ProtectedRoute>} />
             <Route path="/" element={<div>Home</div>} />
         </Routes>
     </>
