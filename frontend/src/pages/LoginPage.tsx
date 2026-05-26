@@ -27,7 +27,7 @@ export function LoginPage(){
 
     return (
         <div className="d-flex align-items-center justify-content-center vh-100">
-            
+
             <div className="card shadow p-4" style={{width: '400px'}}>
             <h4 className=" text-center mb-1 fw-bold">Job Tracker</h4>
             <h2 className="mb-4">Login</h2>

@@ -24,7 +24,8 @@ export function CreateApplicationPage(){
         <div className="container mt-5" style={{maxWidth: '600px'}}>
             <div className="card shadow-sm">
                 <div className="card-body p-4">
-                    <h3 className="fw-bold mb-4">New Application</h3>
+                    <h4 className="fw-bold mb-4">New Application</h4>
+                    <p className="text-muted mb-4">Fill in the details of the job you applied for.</p>
                     {error && <div className="alert alert-danger">{error}</div>}
                     <form onSubmit={handleSubmit}>
                         <div className="mb-3">

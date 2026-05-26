@@ -34,7 +34,7 @@ export function EditApplicationPage(){
             setError(updated.error)
             return
         }
-        navigate(`/applications/${id}`)
+        navigate(`/applications`)
     }
     
     return (
@@ -42,6 +42,7 @@ export function EditApplicationPage(){
             <div className="card shadow-sm">
                 <div className="card-body p-4">
                     <h4 className="fw-bold mb-4">Edit Application</h4>
+                    <p className="text-muted mb-4">Update the details of your application.</p>
                     {error && <div className="alert alert-danger">{error}</div>}
                     <form onSubmit={handleSubmit}>
                         <div className="mb-3">
@@ -62,7 +63,7 @@ export function EditApplicationPage(){
                         </div>
                         <div className="d-flex gap-2 mt-4">
                             <button type="submit" className="btn btn-primary">Save</button>
-                            <button type="button" className="btn btn-outline-secondary" onClick={() => navigate(`/applications/${id}`)}>Cancel</button>
+                            <button type="button" className="btn btn-outline-secondary" onClick={() => navigate(`/applications/`)}>Cancel</button>
                         </div>
                     </form>
                 </div>

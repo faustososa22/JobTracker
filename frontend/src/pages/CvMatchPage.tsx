@@ -30,6 +30,7 @@ export function CvMatchPage(){
             <div className="card shadow-sm">
                 <div className="card-body p-4">
                     <h4 className="fw-bold mb-4">CV Match</h4>
+                    <p className="text-muted mb-4">Upload your CV and a job offer to get an AI-powered match score with strengths, weaknesses, and suggestions.</p>
                     {error && <div className="alert alert-danger">{error}</div>}
                     <form onSubmit={handleSubmit}>
                         <div className="mb-3">

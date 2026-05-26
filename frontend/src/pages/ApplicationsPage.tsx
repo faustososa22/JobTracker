@@ -62,7 +62,14 @@ export function ApplicationsPage(){
                     <div className="spinner-border text-primary" style={{ width: '3rem', height: '3rem' }} role="status" />
                 </div>
                 : <div className="row">
-                    {filtered.map(app => (
+                    {filtered.length === 0
+                        ? <p className="text-muted">
+                            {applications.length === 0
+                                ? "You haven't added any applications yet."
+                                : "No applications match the selected filter."
+                            }
+                        </p>
+                        : filtered.map(app => (
                         <div key={app.id} className="col-md-4 mb-3">
                             <div className="card mb-3 shadow-sm h-100" style={{cursor: 'pointer'}} onClick={() => navigate(`/applications/${app.id}`)}>
                                 <div className="card-body">

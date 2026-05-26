@@ -8,10 +8,11 @@ import { CreateApplicationPage } from './pages/CreateApplicationPage'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import { CvMatchPage } from './pages/CvMatchPage'
 import { EditApplicationPage } from './pages/EditApplicationPage'
+import { HomePage } from './pages/HomePage'
 
 function AppLayout() {
     const location = useLocation()
-    const hideNavbar = ['/login', '/register'].includes(location.pathname)
+    const hideNavbar = ['/login', '/register', '/'].includes(location.pathname)
 
     return <>
         {!hideNavbar && <Navbar />}
@@ -23,7 +24,7 @@ function AppLayout() {
             <Route path='/applications/:id/edit' element={<ProtectedRoute><EditApplicationPage/></ProtectedRoute>}/>
             <Route path="/applications/:id" element={<ProtectedRoute><ApplicationDetailPage/></ProtectedRoute>} />
             <Route path="/cv-match" element={<ProtectedRoute><CvMatchPage/></ProtectedRoute>} />
-            <Route path="/" element={<div>Home</div>} />
+            <Route path="/" element={<HomePage/>} />
         </Routes>
     </>
 }
