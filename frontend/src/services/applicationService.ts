@@ -21,7 +21,7 @@ export const getByIdAsync = async (id: number): Promise<ApiResult<Application>> 
     }
 }
 
-export const createAsync = async (application: Application): Promise<ApiResult<Application>> => {
+export const createAsync = async (application: Pick<Application, 'companyName' | 'jobTitle' | 'description' | 'appliedDate'> ): Promise<ApiResult<Application>> => {
     try{
         const response = await api.post('/applications', application)
         return {data: response.data}

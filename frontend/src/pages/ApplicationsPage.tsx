@@ -18,8 +18,10 @@ export function ApplicationsPage(){
 
     return(
         <div className="container mt-4">
-            <h3 className="fw-bold mb-4">Job Applications</h3>
-
+            <div className="d-flex justify-content-between align-items-center mb-4">
+                <h3 className="fw-bold mb-0">Job Applications</h3>
+                <button className="btn btn-primary" onClick={() => navigate('/applications/create')}>New Application</button>
+            </div>
             <div className="row">
                 {applications.map(app => (
                     <div key={app.id} className="col-md-4 mb-3">

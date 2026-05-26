@@ -4,6 +4,7 @@ import { RegisterPage } from './pages/RegisterPage'
 import { ApplicationsPage } from './pages/ApplicationsPage'
 import { ApplicationDetailPage } from './pages/ApplicationDetailPage'
 import { Navbar } from './components/Navbar'
+import { CreateApplicationPage } from './pages/CreateApplicationPage'
 
 function AppLayout() {
     const location = useLocation()
@@ -15,6 +16,7 @@ function AppLayout() {
             <Route path="/login" element={<LoginPage/>} />
             <Route path="/register" element={<RegisterPage/>} />
             <Route path="/applications" element={<ApplicationsPage/>} />
+            <Route path="/applications/create" element={<CreateApplicationPage/>} />
             <Route path="/applications/:id" element={<ApplicationDetailPage/>} />
             <Route path="/" element={<div>Home</div>} />
         </Routes>
