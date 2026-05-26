@@ -6,12 +6,15 @@ import { getStatusBadgeColor, getStatusLabel } from "../utils/statusHelpers"
 import type { StatusHistory } from "../types/StatusHistory"
 import { createStatus, deleteStatus, getByApplicationId } from "../services/statusHistoryService"
 import { ApplicationStatus } from "../types/ApplicationStatus"
+import { getApplicationInsightsAsync } from "../services/aiService"
 
 export function ApplicationDetailPage(){
     const [application, setApplication] = useState<Application>()
     const [statusHistory, setStatusHistory] = useState<StatusHistory[]>([])
     const [newStatus, setNewStatus] = useState<ApplicationStatus>(ApplicationStatus.Applied)
     const [newNotes, setNewNotes] = useState('')
+    const [ insights, setInsights ] = useState<string | undefined>(undefined)
+
 
     const navigate = useNavigate()
     const { id } = useParams()    
@@ -47,6 +50,11 @@ export function ApplicationDetailPage(){
                 if (updatedApp.data) setApplication(updatedApp.data)
             }
         }
+    }
+
+    const handleGetInsights = async () => {
+        const result = await getApplicationInsightsAsync(parseInt(id!))
+        if (result.data) setInsights(result.data)
     }
 
     const handleDeleteStatus = async (statusId: number) => {
@@ -119,6 +127,15 @@ export function ApplicationDetailPage(){
                         ))}
                     </div>
                 )}
+            </div>
+            <div className="card shadow-sm p-4 mt-4 mb-4">
+                <div className="d-flex justify-content-between align-items-center mb-3">
+                    <h5 className="fw-bold mb-0">AI Insights</h5>
+                    <button className="btn btn-primary btn-sm" onClick={handleGetInsights}>Get Insights</button>
+                </div>
+                {insights
+                    ? <p style={{ whiteSpace: 'pre-line' }}>{insights}</p>
+                    : <p className="text-muted">Click "Get Insights" to analyse this application.</p>}
             </div>
         </div>
     </>

@@ -6,16 +6,28 @@ namespace JobTracker.Services
     public class ApplicationService : IApplicationService
     {
         private readonly IApplicationRepository _applicationRepository;
+        private readonly IStatusHistoryRepository _statusHistoryRepository;
 
-        public ApplicationService(IApplicationRepository applicationRepository)
+        public ApplicationService(IApplicationRepository applicationRepository, IStatusHistoryRepository statusHistoryRepository)
         {
             this._applicationRepository = applicationRepository;
+            this._statusHistoryRepository = statusHistoryRepository;
         }
         public async Task<Application> CreateApplicationAsync(Application application)
         {
             application.AppliedDate = application.AppliedDate.ToUniversalTime();
             application.LastUpdated = application.LastUpdated.ToUniversalTime();
-            return await _applicationRepository.CreateAsync(application);
+            var created = await _applicationRepository.CreateAsync(application);
+
+            await _statusHistoryRepository.CreateStatusHistoryAsync(new StatusHistory
+            {
+                ApplicationId = created.Id,
+                Status = created.Status,
+                ChangedAt = DateTimeOffset.UtcNow,
+                Notes = "Application created"
+            });
+            
+            return created;
         }
 
         public async Task<bool> DeleteApplicationAsync(int id, int userId)

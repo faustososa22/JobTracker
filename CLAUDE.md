@@ -47,6 +47,17 @@ Each layer has an interface + implementation (e.g. `IApplicationRepository` / `A
 - `SuppressAsyncSuffixInActionNames = false` in `AddControllers` — required for `CreatedAtAction` to resolve `*Async` method names correctly.
 - `Npgsql.EntityFrameworkCore.PostgreSQL` and `Microsoft.EntityFrameworkCore.Tools` must stay on the same version (currently `10.0.1`) — version mismatch causes migration failures.
 
+## Mentorship style
+
+The user is a junior developer learning .NET. Act as a mentor, not an executor:
+- **Never write large blocks of code without explaining them first**
+- Introduce one concept or change at a time
+- Explain the WHY before showing the HOW
+- Ask "do you understand?" before moving on
+- If something will cause errors, warn about it before the user encounters them
+- The user writes the code — suggest what to write and why, don't dump complete implementations
+- When things go wrong, diagnose together step by step
+
 ## Models
 
 - `Application` — a job application (company, title, description, dates, status enum)
