@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"
-import { getAllAsync } from "../services/applicationService"
+import { deleteAsync, getAllAsync } from "../services/applicationService"
 import type { Application } from "../types/Application"
 import { useNavigate } from "react-router-dom"
 import { getStatusBadgeColor, getStatusLabel } from "../utils/statusHelpers"
 import { ApplicationStatus } from "../types/ApplicationStatus"
+import Swal from "sweetalert2"
 
 export function ApplicationsPage(){
     const [applications, setApplications] = useState<Application[]>([])
@@ -19,6 +20,23 @@ export function ApplicationsPage(){
         }
         fetchApplications()
     }, [])
+
+    
+    const handleDelete = async (e: React.MouseEvent, id: number) => {
+        e.stopPropagation()
+        const confirm = await Swal.fire({
+            title: 'Delete application?',
+            text: 'This action cannot be undone.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'Delete',
+            cancelButtonText: 'Cancel'
+        })
+        if (!confirm.isConfirmed) return
+        await deleteAsync(id)
+        setApplications(prev => prev.filter(app => app.id !== id))
+    }
 
     const filtered = selectedStatus === null
     ? applications
@@ -60,6 +78,13 @@ export function ApplicationsPage(){
                                         <small className="text-muted">Applied: {new Date(app.appliedDate).toLocaleDateString('en-GB')}</small>
                                     </p>
                                     <span className={`badge ${getStatusBadgeColor(app.status)}`}>{getStatusLabel(app.status)}</span>
+                                    <div className="d-flex justify-content-end mt-2">
+                                        <button
+                                            className="btn btn-sm btn-outline-danger"
+                                            onClick={e => handleDelete(e, app.id)}>
+                                            Delete
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
