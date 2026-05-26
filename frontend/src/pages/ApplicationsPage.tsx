@@ -3,10 +3,12 @@ import { getAllAsync } from "../services/applicationService"
 import type { Application } from "../types/Application"
 import { useNavigate } from "react-router-dom"
 import { getStatusBadgeColor, getStatusLabel } from "../utils/statusHelpers"
+import { ApplicationStatus } from "../types/ApplicationStatus"
 
 export function ApplicationsPage(){
     const [applications, setApplications] = useState<Application[]>([])
     const [ loading, setLoading ] = useState(true)
+    const [ selectedStatus, setSelectedStatus ] = useState<number | null>(null)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -18,18 +20,31 @@ export function ApplicationsPage(){
         fetchApplications()
     }, [])
 
+    const filtered = selectedStatus === null
+    ? applications
+    : applications.filter(app => app.status === selectedStatus)
+
     return(
         <div className="container mt-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
                 <h3 className="fw-bold mb-0">Job Applications</h3>
-                <button className="btn btn-primary" onClick={() => navigate('/applications/create')}>New Application</button>
+                <div className="d-flex gap-2">
+                    <select className="form-select" value={selectedStatus ?? ''} onChange={e => setSelectedStatus(e.target.value === '' ? null : parseInt(e.target.value))}>
+                        <option value="">All</option>
+                        <option value={ApplicationStatus.Applied}>Applied</option>
+                        <option value={ApplicationStatus.Interviewing}>Interviewing</option>
+                        <option value={ApplicationStatus.Offered}>Offered</option>
+                        <option value={ApplicationStatus.Rejected}>Rejected</option>
+                    </select>
+                    <button className="btn btn-primary" onClick={() => navigate('/applications/create')}>New Application</button>
+                </div>
             </div>
             {loading
                 ? <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '300px' }}>
                     <div className="spinner-border text-primary" style={{ width: '3rem', height: '3rem' }} role="status" />
                 </div>
                 : <div className="row">
-                    {applications.map(app => (
+                    {filtered.map(app => (
                         <div key={app.id} className="col-md-4 mb-3">
                             <div className="card mb-3 shadow-sm h-100" style={{cursor: 'pointer'}} onClick={() => navigate(`/applications/${app.id}`)}>
                                 <div className="card-body">
