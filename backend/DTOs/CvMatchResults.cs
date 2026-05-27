@@ -1,4 +1,4 @@
-namespace JobTracker.Dtos
+namespace JobTracker.DTOs
 {
     public class CvMatchResults
     {

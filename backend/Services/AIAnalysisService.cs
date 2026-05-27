@@ -1,7 +1,7 @@
 using System.Text.Json;
 using Anthropic;
 using Anthropic.Models.Messages;
-using JobTracker.Dtos;
+using JobTracker.DTOs;
 using Anthropic.Core;
 using Anthropic.Models.Beta.Files;
 using Anthropic.Models.Beta.Messages;
@@ -90,17 +90,18 @@ namespace JobTracker.Services
         private string BuildFilePrompt(string jobOfferText)
         {
             return $$"""
-                El documento adjunto es un CV. Analizalo junto a la siguiente oferta de trabajo.
-                Respondé SOLO en JSON con esta estructura exacta. No uses bloques de código markdown. Devolvé únicamente el JSON puro.
+                The attached document is a CV. Analyse it together with the following job offer.
+                Respond ONLY in JSON with this exact structure. Do not use markdown code blocks. Return pure JSON only.
+                Always respond in English unless explicitly asked otherwise.
                 {
-                "matchScore": <número del 0 al 100>,
-                "summary": "<resumen breve>",
-                "strengths": ["<fortaleza 1>", "<fortaleza 2>"],
-                "weaknesses": ["<debilidad 1>", "<debilidad 2>"],
-                "suggestions": ["<sugerencia 1>", "<sugerencia 2>"]
+                "matchScore": <number from 0 to 100>,
+                "summary": "<brief summary>",
+                "strengths": ["<strength 1>", "<strength 2>"],
+                "weaknesses": ["<weakness 1>", "<weakness 2>"],
+                "suggestions": ["<suggestion 1>", "<suggestion 2>"]
                 }
 
-                Oferta de trabajo:
+                Job offer:
                 {{jobOfferText}}
                 """;
         }
@@ -108,20 +109,21 @@ namespace JobTracker.Services
         private string BuildPrompt(string cvText, string jobOfferText)
         {
             return $$"""
-                Analizá el siguiente CV y oferta de trabajo. Respondé SOLO en JSON con esta estructura exacta.
-                No uses bloques de código markdown. Devolvé únicamente el JSON puro.
+                Analyse the following CV and job offer. Respond ONLY in JSON with this exact structure.
+                Do not use markdown code blocks. Return pure JSON only.
+                Always respond in English unless explicitly asked otherwise.
                 {
-                  "matchScore": <número del 0 al 100>,
-                  "summary": "<resumen breve>",
-                  "strengths": ["<fortaleza 1>", "<fortaleza 2>"],
-                  "weaknesses": ["<debilidad 1>", "<debilidad 2>"],
-                  "suggestions": ["<sugerencia 1>", "<sugerencia 2>"]
+                  "matchScore": <number from 0 to 100>,
+                  "summary": "<brief summary>",
+                  "strengths": ["<strength 1>", "<strength 2>"],
+                  "weaknesses": ["<weakness 1>", "<weakness 2>"],
+                  "suggestions": ["<suggestion 1>", "<suggestion 2>"]
                 }
 
                 CV:
                 {{cvText}}
 
-                Oferta de trabajo:
+                Job offer:
                 {{jobOfferText}}
                 """;
         }
@@ -143,7 +145,7 @@ namespace JobTracker.Services
             return result ?? new CvMatchResults();
         }
 
-        public async Task<string> GetApplicationInsightsAsync(int applicationId, int userId)
+        public async Task<ApplicationInsightsResults> GetApplicationInsightsAsync(int applicationId, int userId)
         {
             var application = await _applicationRepository.GetByIdAsync(applicationId, userId);
             if (application == null) throw new ArgumentException("Aplicación no encontrada.");
@@ -153,28 +155,50 @@ namespace JobTracker.Services
             var prompt = BuildInsightsPrompt(application, statusHistory);
             var response = await _anthropicClient.Messages.Create(new Anthropic.Models.Messages.MessageCreateParams
             {
-                Model = "claude-sonnet-4-6",
-                MaxTokens = 1024,
+                Model = "claude-haiku-4-5-20251001",
+                MaxTokens = 512,
                 Messages = [new() { Role = Anthropic.Models.Messages.Role.User, Content = prompt }]
             });
             response.Content[0].TryPickText(out var textBlock);
-            return textBlock?.Text.Trim() ?? "No se pudieron generar insights para esta aplicación.";
+            return ParseApplicationInsightsResponse(textBlock?.Text ?? string.Empty);
         }
 
         private string BuildInsightsPrompt(Application application, List<StatusHistory> statusHistory)
         {
             var historial = string.Join("\n", statusHistory.Select(sh => $"- {sh.Status} el {sh.ChangedAt:dd/MM/yyyy}"));
             return $$"""
-                Analizá el siguiente historial de una aplicación laboral y dá recomendaciones concretas.
-                Respondé en texto plano, sin markdown.
+                Analyse the following job application history.
+                Respond ONLY in JSON with this exact structure. Do not use markdown code blocks. Return pure JSON only.
+                Always respond in English unless explicitly asked otherwise.
+                {
+                "overview": "<what is happening with this application, max 2 sentences>",
+                "whatToExpect": "<what may happen next, max 2 sentences>",
+                "recommendations": ["<concrete recommendation 1>", "<concrete recommendation 2>", "<concrete recommendation 3>"]
+                }
 
                 Empresa: {{application.CompanyName}}
                 Puesto: {{application.JobTitle}}
-                Descripción: {{application.Description}}
 
                 Historial de estados:
                 {{historial}}
                 """;
+        }
+
+        private ApplicationInsightsResults ParseApplicationInsightsResponse(string responseText)
+        {
+            var cleaned = responseText.Trim();
+
+            if (cleaned.StartsWith("```"))
+            {
+                cleaned = cleaned.Substring(cleaned.IndexOf('\n') + 1);
+                cleaned = cleaned.Substring(0, cleaned.LastIndexOf("```")).Trim();
+            }
+
+            var result = JsonSerializer.Deserialize<ApplicationInsightsResults>(cleaned, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+            return result ?? new ApplicationInsightsResults();
         }
         
     }

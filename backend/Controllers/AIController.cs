@@ -41,7 +41,7 @@ namespace JobTracker.Controllers
             try
             {
                 var insights = await _aiAnalysisService.GetApplicationInsightsAsync(applicationId, GetUserId());
-                return Ok(new { Insights = insights });
+                return Ok(insights);
 
             }catch(ArgumentException ex)
             {

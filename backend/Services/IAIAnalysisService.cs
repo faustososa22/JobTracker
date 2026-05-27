@@ -1,10 +1,10 @@
-using JobTracker.Dtos;
+using JobTracker.DTOs;
 
 namespace JobTracker.Services
 {
     public interface IAIAnalysisService
     {
         Task<CvMatchResults> CvMatchAsync(IFormFile? cvFile, string? cvText, string jobOfferText);
-        Task<string> GetApplicationInsightsAsync(int applicationId, int userId);
+        Task<ApplicationInsightsResults> GetApplicationInsightsAsync(int applicationId, int userId);
     }
 }
