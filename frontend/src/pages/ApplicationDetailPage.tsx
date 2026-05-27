@@ -115,7 +115,7 @@ export function ApplicationDetailPage(){
 
                 <hr style={{ margin: '16px 0' }} />
 
-                <p style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-muted)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.06em', fontSize: '11px' }}>Description</p>
+                <p style={{ fontSize: '11px', fontWeight: 500, color: 'var(--text-muted)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Description</p>
                 <p style={{ fontSize: '14px', lineHeight: 1.7, marginBottom: '12px' }}>{application?.description}</p>
                 <p style={{ fontSize: '12px', color: 'var(--text-muted)', margin: 0 }}>
                     Applied {new Date(application?.appliedDate ?? '').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
