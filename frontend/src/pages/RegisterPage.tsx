@@ -34,51 +34,45 @@ export function RegisterPage(){
 
     return (
         <div className="auth-wrapper">
-            <div className="card p-4" style={{ width: '400px' }}>
-                <div className="text-center mb-4">
-                    <div className="auth-logo mb-3">J</div>
-                    <h5 className="fw-bold mb-0" style={{ color: '#1e293b' }}>Job Tracker</h5>
+            <div style={{ width: '100%', maxWidth: '380px' }}>
+                <div style={{ textAlign: 'center', marginBottom: '28px' }}>
+                    <div className="auth-logo" style={{ margin: '0 auto 12px' }}>J</div>
+                    <p style={{ fontSize: '13px', color: 'var(--text-muted)', margin: 0 }}>Job Tracker</p>
                 </div>
-                <h4 className="fw-bold mb-4">Create account</h4>
-                <form onSubmit={handleSubmit}>
-                    <div className="mb-3">
-                        <label className="form-label fw-medium">Name</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            value={name}
-                            onChange={e => setName(e.target.value)} />
-                    </div>
-                    <div className="mb-3">
-                        <label className="form-label fw-medium">Lastname</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            value={lastName}
-                            onChange={e => setLastname(e.target.value)} />
-                    </div>
-                    <div className="mb-3">
-                        <label className="form-label fw-medium">Email</label>
-                        <input
-                            type="email"
-                            className="form-control"
-                            value={email}
-                            onChange={e => setEmail(e.target.value)} />
-                    </div>
-                    <div className="mb-3">
-                        <label className="form-label fw-medium">Password</label>
-                        <input
-                            type="password"
-                            className="form-control"
-                            value={password}
-                            onChange={e => setPassword(e.target.value)} />
-                    </div>
-                    <button type="submit" className="btn btn-primary w-100 mt-1">Create account</button>
-                    {error && <p className="text-danger mt-2 mb-0 small">{error}</p>}
-                    <p className="text-center mt-3 mb-0 small" style={{ color: '#64748b' }}>
-                        Already have an account? <a href="/login" className="text-decoration-none fw-semibold" style={{ color: '#3b82f6' }}>Sign in</a>
+
+                <div className="card p-4">
+                    <h4 style={{ fontWeight: 700, marginBottom: '4px', letterSpacing: '-0.02em' }}>Create account</h4>
+                    <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '24px' }}>Start tracking your applications</p>
+
+                    {error && <div className="alert alert-danger mb-3">{error}</div>}
+
+                    <form onSubmit={handleSubmit}>
+                        <div className="row g-3 mb-3">
+                            <div className="col-6">
+                                <label className="form-label">First name</label>
+                                <input type="text" className="form-control" value={name} onChange={e => setName(e.target.value)} />
+                            </div>
+                            <div className="col-6">
+                                <label className="form-label">Last name</label>
+                                <input type="text" className="form-control" value={lastName} onChange={e => setLastname(e.target.value)} />
+                            </div>
+                        </div>
+                        <div className="mb-3">
+                            <label className="form-label">Email</label>
+                            <input type="email" className="form-control" value={email} onChange={e => setEmail(e.target.value)} />
+                        </div>
+                        <div className="mb-4">
+                            <label className="form-label">Password</label>
+                            <input type="password" className="form-control" value={password} onChange={e => setPassword(e.target.value)} />
+                        </div>
+                        <button type="submit" className="btn btn-primary w-100" style={{ padding: '10px' }}>Create account</button>
+                    </form>
+
+                    <p style={{ textAlign: 'center', marginTop: '20px', marginBottom: 0, fontSize: '13px', color: 'var(--text-muted)' }}>
+                        Already have an account?{' '}
+                        <a href="/login" style={{ color: 'var(--accent)', textDecoration: 'none', fontWeight: 500 }}>Sign in</a>
                     </p>
-                </form>
+                </div>
             </div>
         </div>
     )

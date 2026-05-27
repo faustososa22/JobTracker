@@ -4,35 +4,67 @@ export function HomePage() {
     const navigate = useNavigate()
 
     return (
-        <div className="min-vh-100 bg-dark text-white d-flex flex-column justify-content-center align-items-center px-3">
-            <div className="text-center mb-5">
-                <div className="display-1 mb-3">💼</div>
-                <h1 className="fw-bold display-3 mb-2">Job Tracker</h1>
-                <hr className="border-secondary mx-auto" style={{ width: '80px' }} />
-                <p className="text-secondary fs-5 mb-5">Track your applications with AI-powered insights</p>
-                <div className="d-flex gap-3 justify-content-center">
-                    <button className="btn btn-primary btn-lg px-5" onClick={() => navigate('/login')}>Login</button>
-                    <button className="btn btn-outline-light btn-lg px-5" onClick={() => navigate('/register')}>Register</button>
+        <div style={{ minHeight: '100vh', background: 'var(--surface)', display: 'flex', flexDirection: 'column' }}>
+            {/* Navbar strip */}
+            <div style={{ borderBottom: '1px solid var(--border)', padding: '0 32px', height: '56px', display: 'flex', alignItems: 'center' }}>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '10px', fontWeight: 600, fontSize: '15px', color: 'var(--text)', letterSpacing: '-0.01em' }}>
+                    <span className="auth-logo" style={{ width: '28px', height: '28px', fontSize: '13px', borderRadius: '7px' }}>J</span>
+                    Job Tracker
+                </span>
+                <div style={{ marginLeft: 'auto', display: 'flex', gap: '8px' }}>
+                    <button className="btn btn-sm" onClick={() => navigate('/login')} style={{ fontSize: '13px', color: 'var(--text-muted)', border: '1px solid var(--border)', background: 'transparent' }}>
+                        Sign in
+                    </button>
+                    <button className="btn btn-primary btn-sm" onClick={() => navigate('/register')} style={{ fontSize: '13px' }}>
+                        Get started
+                    </button>
                 </div>
             </div>
 
-            <hr className="border-secondary w-100" style={{ maxWidth: '700px' }} />
+            {/* Hero */}
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '80px 24px 60px', textAlign: 'center' }}>
+                <div style={{
+                    display: 'inline-flex', alignItems: 'center', gap: '6px',
+                    background: 'var(--accent-light)', color: 'var(--accent)',
+                    borderRadius: '20px', padding: '4px 14px', fontSize: '12px', fontWeight: 500,
+                    marginBottom: '28px', border: '1px solid rgba(99,102,241,0.2)'
+                }}>
+                    AI-powered · Free to use
+                </div>
 
-            <div className="row text-center mt-4" style={{ maxWidth: '700px' }}>
-                <div className="col-md-4 mb-4">
-                    <div className="fs-1 mb-2">📋</div>
-                    <h6 className="fw-bold">Track</h6>
-                    <p className="text-secondary small">Manage all your job applications in one place</p>
+                <h1 style={{ fontSize: 'clamp(2.2rem, 5vw, 3.5rem)', fontWeight: 700, color: 'var(--text)', letterSpacing: '-0.03em', lineHeight: 1.15, marginBottom: '20px', maxWidth: '640px' }}>
+                    Track your job hunt,<br />
+                    <span style={{ color: 'var(--accent)' }}>land faster.</span>
+                </h1>
+
+                <p style={{ fontSize: '17px', color: 'var(--text-muted)', maxWidth: '480px', lineHeight: 1.6, marginBottom: '36px' }}>
+                    Organise every application, log every stage, and get AI-powered feedback on your CV and progress.
+                </p>
+
+                <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                    <button className="btn btn-primary" onClick={() => navigate('/register')} style={{ padding: '10px 24px', fontSize: '14px' }}>
+                        Get started — it's free
+                    </button>
+                    <button className="btn" onClick={() => navigate('/login')} style={{ padding: '10px 24px', fontSize: '14px', border: '1px solid var(--border)', color: 'var(--text-muted)', background: 'transparent' }}>
+                        Sign in
+                    </button>
                 </div>
-                <div className="col-md-4 mb-4">
-                    <div className="fs-1 mb-2">🤖</div>
-                    <h6 className="fw-bold">CV Match</h6>
-                    <p className="text-secondary small">Match your CV to any job offer with AI</p>
-                </div>
-                <div className="col-md-4 mb-4">
-                    <div className="fs-1 mb-2">📊</div>
-                    <h6 className="fw-bold">Insights</h6>
-                    <p className="text-secondary small">Get AI feedback on your application progress</p>
+            </div>
+
+            {/* Features */}
+            <div style={{ borderTop: '1px solid var(--border)', background: 'var(--bg)', padding: '60px 24px' }}>
+                <div style={{ maxWidth: '800px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '32px' }}>
+                    {[
+                        { label: 'Track', desc: 'Every application in one place — status, notes, and timeline.' },
+                        { label: 'CV Match', desc: 'Paste a job offer and get an AI match score for your CV.' },
+                        { label: 'Insights', desc: 'AI feedback on what to expect and how to improve.' },
+                    ].map(f => (
+                        <div key={f.label}>
+                            <div style={{ width: '32px', height: '3px', background: 'var(--accent)', borderRadius: '2px', marginBottom: '14px' }} />
+                            <p style={{ fontWeight: 600, fontSize: '15px', marginBottom: '6px', color: 'var(--text)' }}>{f.label}</p>
+                            <p style={{ fontSize: '13px', color: 'var(--text-muted)', margin: 0, lineHeight: 1.6 }}>{f.desc}</p>
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>

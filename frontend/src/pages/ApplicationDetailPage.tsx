@@ -15,13 +15,12 @@ export function ApplicationDetailPage(){
     const [statusHistory, setStatusHistory] = useState<StatusHistory[]>([])
     const [newStatus, setNewStatus] = useState<ApplicationStatus>(ApplicationStatus.Applied)
     const [newNotes, setNewNotes] = useState('')
-    const [ insights, setInsights ] = useState<ApplicationInsightsResults | undefined>(undefined)
-    const [ loading, setLoading ] = useState(true)
+    const [insights, setInsights] = useState<ApplicationInsightsResults | undefined>(undefined)
+    const [loading, setLoading] = useState(true)
     const [loadingInsights, setLoadingInsights] = useState(false)
 
-
     const navigate = useNavigate()
-    const { id } = useParams()    
+    const { id } = useParams()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -48,7 +47,6 @@ export function ApplicationDetailPage(){
             const updated = await getByApplicationId(parseInt(id!))
             if(updated.data) setStatusHistory(updated.data)
             setNewNotes('')
-            
             if (application){
                 const updatedApp = await updateAsync({...application, status: newStatus})
                 if (updatedApp.data) setApplication(updatedApp.data)
@@ -69,7 +67,7 @@ export function ApplicationDetailPage(){
             text: 'This action cannot be undone.',
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#d33',
+            confirmButtonColor: '#6366f1',
             confirmButtonText: 'Delete',
             cancelButtonText: 'Cancel'
         })
@@ -79,40 +77,63 @@ export function ApplicationDetailPage(){
     }
 
     if (loading) return (
-        <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '400px' }}>
-            <div className="spinner-border text-primary" style={{ width: '3rem', height: '3rem' }} role="status" />
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}>
+            <div className="spinner-border text-primary" style={{ width: '2rem', height: '2rem' }} role="status" />
         </div>
     )
 
-    return <>
-        <div className="container mt-4" style={{maxWidth: '800px'}}>
-            <button className="btn btn-outline-secondary mb-3" onClick={() => navigate('/applications')}>Back</button>
-            <div className="card shadow-sm p-4">
-                <div className="d-flex justify-content-between align-items-start">
+    return (
+        <div className="container" style={{ maxWidth: '720px', paddingTop: '32px', paddingBottom: '48px' }}>
+            <button
+                className="btn btn-sm"
+                style={{ fontSize: '13px', border: '1px solid var(--border)', color: 'var(--text-muted)', background: 'transparent', marginBottom: '20px' }}
+                onClick={() => navigate('/applications')}
+            >
+                ← Back
+            </button>
+
+            {/* Main card */}
+            <div className="card p-4 mb-3">
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '12px' }}>
                     <div>
-                        <h3 className="fw-bold">{application?.companyName}</h3>
-                        <p className="text-muted fs-5">{application?.jobTitle}</p>
+                        <h4 style={{ fontWeight: 700, marginBottom: '4px', letterSpacing: '-0.02em' }}>{application?.companyName}</h4>
+                        <p style={{ fontSize: '15px', color: 'var(--text-muted)', marginBottom: '0' }}>{application?.jobTitle}</p>
                     </div>
-                    <div className="d-flex align-items-center gap-2">
-                        <span className={`badge fs-6 ${getStatusBadgeColor(application?.status ?? 0)}`}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+                        <span className={`badge ${getStatusBadgeColor(application?.status ?? 0)}`} style={{ fontSize: '12px' }}>
                             {getStatusLabel(application?.status ?? 0)}
                         </span>
-                        <button className="btn btn-sm btn-outline-secondary" onClick={() => navigate(`/applications/${id}/edit`)}>Edit</button>
+                        <button
+                            className="btn btn-sm"
+                            style={{ fontSize: '12px', border: '1px solid var(--border)', color: 'var(--text-muted)', background: 'transparent', padding: '3px 10px' }}
+                            onClick={() => navigate(`/applications/${id}/edit`)}
+                        >
+                            Edit
+                        </button>
                     </div>
                 </div>
-                <hr />
-                <h6 className="fw-bold">Description</h6>
-                <p>{application?.description}</p>
-                <p className="text-muted small">Applied: {new Date(application?.appliedDate ?? '').toLocaleDateString('en-GB')}</p>
+
+                <hr style={{ margin: '16px 0' }} />
+
+                <p style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-muted)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.06em', fontSize: '11px' }}>Description</p>
+                <p style={{ fontSize: '14px', lineHeight: 1.7, marginBottom: '12px' }}>{application?.description}</p>
+                <p style={{ fontSize: '12px', color: 'var(--text-muted)', margin: 0 }}>
+                    Applied {new Date(application?.appliedDate ?? '').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+                </p>
             </div>
-            <div className="card shadow-sm p-4 mt-2">
-                <h5 className="fw-bold mb-3">Status History</h5>
-                <p className="text-muted small mb-3">Track every stage of your application process.</p>
-                <div className="d-flex gap-2 mb-3">
+
+            {/* Status history */}
+            <div className="card p-4 mb-3">
+                <h6 style={{ fontWeight: 600, marginBottom: '4px', letterSpacing: '-0.01em' }}>Status History</h6>
+                <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '20px' }}>Track every stage of your application.</p>
+
+                <div style={{ display: 'flex', gap: '8px', marginBottom: '20px', flexWrap: 'wrap' }}>
                     <select
-                        className="form-select"
+                        className="form-select form-select-sm"
                         value={newStatus}
-                        onChange={e => setNewStatus(parseInt(e.target.value) as ApplicationStatus)}>
+                        onChange={e => setNewStatus(parseInt(e.target.value) as ApplicationStatus)}
+                        style={{ width: '160px' }}
+                    >
                         <option value={ApplicationStatus.Applied}>Applied</option>
                         <option value={ApplicationStatus.Interviewing}>Interviewing</option>
                         <option value={ApplicationStatus.Offered}>Offered</option>
@@ -120,73 +141,90 @@ export function ApplicationDetailPage(){
                     </select>
                     <input
                         type="text"
-                        className="form-control"
+                        className="form-control form-control-sm"
                         placeholder="Notes (optional)"
                         value={newNotes}
                         onChange={e => setNewNotes(e.target.value)}
+                        style={{ flex: 1, minWidth: '120px' }}
                     />
-                    <button className="btn btn-primary" onClick={handleAddStatus}>Add</button>
+                    <button className="btn btn-primary btn-sm" onClick={handleAddStatus}>Add</button>
                 </div>
-                    {statusHistory.length === 0 ? (
-                        <p className="text-muted">No status changes recorded.</p>
-                    ): (
-                        <div className="d-flex flex-column gap-2">
-                            {statusHistory.map(entry => (
-                                <div key={entry.id} className="card border p-3">
-                                    <div className="d-flex justify-content-between align-items-center">
-                                        <span className={`badge ${getStatusBadgeColor(entry.status)}`}>
-                                            {getStatusLabel(entry.status)}
-                                        </span>
-                                        <span className="text-muted small">
-                                            {new Date(entry.changedAt).toLocaleString('en-GB')}
-                                        </span>
-                                    </div>
-                                    <div className="d-flex justify-content-between align-items-center mt-2">
-                                        <p className="text-muted small mb-0">{entry.notes ?? ''}</p>
-                                        <button
-                                            className="btn btn-sm btn-outline-danger"
-                                            onClick={() => handleDeleteStatus(entry.id)}>
-                                            Delete
-                                        </button>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    )}
+
+                {statusHistory.length === 0 ? (
+                    <p style={{ fontSize: '13px', color: 'var(--text-muted)', margin: 0 }}>No status changes recorded yet.</p>
+                ) : (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                        {statusHistory.map(entry => (
+                            <div key={entry.id} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 14px', background: 'var(--bg)', borderRadius: '8px', border: '1px solid var(--border)' }}>
+                                <span className={`badge ${getStatusBadgeColor(entry.status)}`} style={{ flexShrink: 0 }}>
+                                    {getStatusLabel(entry.status)}
+                                </span>
+                                <span style={{ fontSize: '12px', color: 'var(--text-muted)', flex: 1 }}>
+                                    {entry.notes || '—'}
+                                </span>
+                                <span style={{ fontSize: '11px', color: 'var(--text-muted)', flexShrink: 0 }}>
+                                    {new Date(entry.changedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
+                                </span>
+                                <button
+                                    className="btn btn-sm"
+                                    style={{ fontSize: '11px', border: '1px solid #fecaca', color: '#b91c1c', background: 'transparent', padding: '2px 8px', flexShrink: 0 }}
+                                    onClick={() => handleDeleteStatus(entry.id)}
+                                >
+                                    ×
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
-            <div className="card shadow-sm p-4 mt-2 mb-5">
-                <div className="d-flex justify-content-between align-items-center mb-3">
-                    <h5 className="fw-bold mb-0">AI Insights</h5>
-                    <button className="btn btn-primary btn-sm" onClick={handleGetInsights} disabled={loadingInsights}>
+
+            {/* AI Insights */}
+            <div className="card p-4 mb-4">
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                    <div>
+                        <h6 style={{ fontWeight: 600, marginBottom: '2px', letterSpacing: '-0.01em' }}>AI Insights</h6>
+                        <p style={{ fontSize: '12px', color: 'var(--text-muted)', margin: 0 }}>Powered by Claude</p>
+                    </div>
+                    <button
+                        className="btn btn-primary btn-sm"
+                        onClick={handleGetInsights}
+                        disabled={loadingInsights}
+                        style={{ minWidth: '110px' }}
+                    >
                         {loadingInsights
                             ? <span className="spinner-border spinner-border-sm" role="status" />
-                            : 'Get Insights'
+                            : 'Get insights'
                         }
                     </button>
                 </div>
+
                 {insights ? (
-                    <div className="d-flex flex-column gap-3">
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                         <div>
-                            <h6 className="fw-semibold mb-1">Overview</h6>
-                            <p className="mb-0">{insights.overview}</p>
+                            <p style={{ fontSize: '11px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--accent)', marginBottom: '6px' }}>Overview</p>
+                            <p style={{ fontSize: '14px', lineHeight: 1.7, margin: 0 }}>{insights.overview}</p>
                         </div>
+                        <hr style={{ margin: '0' }} />
                         <div>
-                            <h6 className="fw-semibold mb-1">What to Expect</h6>
-                            <p className="mb-0">{insights.whatToExpect}</p>
+                            <p style={{ fontSize: '11px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--accent)', marginBottom: '6px' }}>What to Expect</p>
+                            <p style={{ fontSize: '14px', lineHeight: 1.7, margin: 0 }}>{insights.whatToExpect}</p>
                         </div>
+                        <hr style={{ margin: '0' }} />
                         <div>
-                            <h6 className="fw-semibold mb-1">Recommendations</h6>
-                            <ul className="mb-0 ps-3">
+                            <p style={{ fontSize: '11px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--accent)', marginBottom: '6px' }}>Recommendations</p>
+                            <ul style={{ margin: 0, paddingLeft: '18px' }}>
                                 {insights.recommendations.map((r, i) => (
-                                    <li key={i}>{r}</li>
+                                    <li key={i} style={{ fontSize: '14px', lineHeight: 1.7, marginBottom: '4px' }}>{r}</li>
                                 ))}
                             </ul>
                         </div>
                     </div>
                 ) : (
-                    <p className="text-muted">Click "Get Insights" to analyse this application.</p>
+                    <p style={{ fontSize: '13px', color: 'var(--text-muted)', margin: 0 }}>
+                        Click "Get insights" to receive AI feedback on this application.
+                    </p>
                 )}
             </div>
         </div>
-    </>
+    )
 }

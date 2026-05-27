@@ -1,9 +1,20 @@
+:root {
+  --accent: #6366f1;
+  --accent-hover: #4f46e5;
+  --accent-light: #eef2ff;
+  --text: #0f172a;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --bg: #f8fafc;
+  --surface: #ffffff;
+}
+
 body {
   margin: 0;
-  background-color: #f8fafc;
-  font-family: 'Poppins', sans-serif;
-  --bs-body-font-family: 'Poppins', sans-serif;
-  color: #1e293b;
+  background-color: var(--bg);
+  font-family: 'Inter', sans-serif;
+  --bs-body-font-family: 'Inter', sans-serif;
+  color: var(--text);
 }
 
 #root {
@@ -12,108 +23,120 @@ body {
 
 /* Cards */
 .card {
-  border-radius: 14px !important;
-  border: 1px solid #e2e8f0 !important;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06) !important;
+  border-radius: 12px !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: none !important;
+  background-color: var(--surface) !important;
 }
 
-/* Application cards — left accent + hover lift */
+/* Application cards */
 .app-card {
-  border-left: 4px solid #3b82f6 !important;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  border-left: 3px solid var(--accent) !important;
+  transition: box-shadow 0.15s ease;
 }
 
 .app-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.12) !important;
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.1) !important;
 }
 
 /* Buttons */
 .btn {
   border-radius: 8px;
   font-weight: 500;
+  font-size: 14px;
 }
 
 .btn-primary {
-  background-color: #3b82f6;
-  border-color: #3b82f6;
+  background-color: var(--accent);
+  border-color: var(--accent);
 }
 
 .btn-primary:hover,
 .btn-primary:active {
-  background-color: #2563eb;
-  border-color: #2563eb;
+  background-color: var(--accent-hover);
+  border-color: var(--accent-hover);
 }
 
 .btn-primary:focus-visible {
-  background-color: #2563eb;
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+  background-color: var(--accent-hover);
+  border-color: var(--accent-hover);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
 }
 
 .btn-outline-primary {
-  color: #3b82f6;
-  border-color: #3b82f6;
+  color: var(--accent);
+  border-color: var(--accent);
 }
 
 .btn-outline-primary:hover {
-  background-color: #3b82f6;
-  border-color: #3b82f6;
+  background-color: var(--accent);
+  border-color: var(--accent);
 }
 
 /* Form controls */
 .form-control,
 .form-select {
   border-radius: 8px;
-  border-color: #e2e8f0;
-  color: #1e293b;
+  border-color: var(--border);
+  color: var(--text);
+  font-size: 14px;
+  background-color: var(--surface);
 }
 
 .form-control:focus,
 .form-select:focus {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+  background-color: var(--surface);
 }
 
-/* Badges — soft pill style */
-.badge {
-  border-radius: 20px;
-  padding: 5px 12px;
+.form-label {
+  font-size: 13px;
   font-weight: 500;
-  font-size: 0.72rem;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+/* Badges */
+.badge {
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-weight: 500;
+  font-size: 0.71rem;
+  letter-spacing: 0.01em;
 }
 
 .badge.bg-primary {
-  background-color: #dbeafe !important;
-  color: #1d4ed8;
+  background-color: #eef2ff !important;
+  color: #4338ca;
 }
 
 .badge.bg-warning {
-  background-color: #fef3c7 !important;
-  color: #92400e;
+  background-color: #fffbeb !important;
+  color: #b45309;
 }
 
 .badge.bg-success {
-  background-color: #d1fae5 !important;
-  color: #065f46;
+  background-color: #f0fdf4 !important;
+  color: #166534;
 }
 
 .badge.bg-danger {
-  background-color: #fee2e2 !important;
-  color: #991b1b;
+  background-color: #fef2f2 !important;
+  color: #b91c1c;
 }
 
 /* Navbar */
 nav.app-navbar {
-  background-color: white;
-  border-bottom: 1px solid #f1f5f9;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  background-color: var(--surface);
+  border-bottom: 1px solid var(--border);
+  box-shadow: none;
 }
 
-/* Auth pages */
+/* Auth */
 .auth-wrapper {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f0f7ff 0%, #f8fafc 100%);
+  background-color: var(--bg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -121,14 +144,51 @@ nav.app-navbar {
 }
 
 .auth-logo {
-  width: 44px;
-  height: 44px;
-  background: #3b82f6;
-  border-radius: 12px;
+  width: 40px;
+  height: 40px;
+  background: var(--accent);
+  border-radius: 10px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   color: white;
   font-weight: 700;
-  font-size: 20px;
+  font-size: 18px;
+}
+
+/* Dividers */
+hr {
+  border-color: var(--border);
+  opacity: 1;
+}
+
+/* Bootstrap overrides */
+.text-muted {
+  color: var(--text-muted) !important;
+}
+
+.text-primary {
+  color: var(--accent) !important;
+}
+
+.spinner-border.text-primary {
+  color: var(--accent) !important;
+}
+
+.alert-danger {
+  background-color: #fef2f2;
+  border-color: #fecaca;
+  color: #b91c1c;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.form-check-input:checked {
+  background-color: var(--accent);
+  border-color: var(--accent);
+}
+
+.form-check-input:focus {
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+  border-color: var(--accent);
 }
