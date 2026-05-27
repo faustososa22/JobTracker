@@ -73,15 +73,15 @@ export function ApplicationsPage(){
                         <div key={app.id} className="col-md-4 mb-3">
                             <div className="card mb-3 shadow-sm h-100" style={{cursor: 'pointer'}} onClick={() => navigate(`/applications/${app.id}`)}>
                                 <div className="card-body">
-                                    <h5 className="card-title">{app.companyName}</h5>
-                                    <p className="card-text text-muted">{app.jobTitle}</p>
+                                    <h5 className="card-title mb-1">{app.companyName}</h5>
+                                    <p className="text-muted mb-1">{app.jobTitle}</p>
                                     <p className="card-text text-muted small mt-2" style={{
                                         overflow: 'hidden',
                                         display: '-webkit-box',
                                         WebkitLineClamp: 2,
                                         WebkitBoxOrient: 'vertical'
                                     }}>{app.description}</p>
-                                    <p className="card-text me-4">
+                                    <p className="card-text mt-2">
                                         <small className="text-muted">Applied: {new Date(app.appliedDate).toLocaleDateString('en-GB')}</small>
                                     </p>
                                     <div className="d-flex justify-content-between align-items-center mt-2">
