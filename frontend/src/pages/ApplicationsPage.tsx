@@ -71,7 +71,7 @@ export function ApplicationsPage(){
                         </p>
                         : filtered.map(app => (
                         <div key={app.id} className="col-md-4 mb-3">
-                            <div className="card mb-3 shadow-sm h-100" style={{cursor: 'pointer'}} onClick={() => navigate(`/applications/${app.id}`)}>
+                            <div className="card mb-3 app-card h-100" style={{cursor: 'pointer'}} onClick={() => navigate(`/applications/${app.id}`)}>
                                 <div className="card-body">
                                     <h5 className="card-title mb-1">{app.companyName}</h5>
                                     <p className="text-muted mb-1">{app.jobTitle}</p>

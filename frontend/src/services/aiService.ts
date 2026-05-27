@@ -1,5 +1,6 @@
 import type { ApiResult } from "../types";
 import type { CvMatchResults } from "../types/CvMatchResults";
+import type { ApplicationInsightsResults } from "../types/ApplicationInsightsResults";
 import api from "./api";
 
 export const cvMatchAsync = async (jobOfferText: string, cvText?: string, cvFile?: File): Promise<ApiResult<CvMatchResults>> => {
@@ -16,10 +17,10 @@ export const cvMatchAsync = async (jobOfferText: string, cvText?: string, cvFile
     }
 }
 
-export const getApplicationInsightsAsync = async (applicationId: number): Promise<ApiResult<string>> => {
-    try{        
+export const getApplicationInsightsAsync = async (applicationId: number): Promise<ApiResult<ApplicationInsightsResults>> => {
+    try{
         const response = await api.get(`/ai/application-insights/${applicationId}`)
-        return {data: response.data.insights}
+        return {data: response.data}
     }catch(error){
         return {error: error.response?.data?.message ?? 'Something went wrong'}
     }

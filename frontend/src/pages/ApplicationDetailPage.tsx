@@ -7,6 +7,7 @@ import type { StatusHistory } from "../types/StatusHistory"
 import { createStatus, deleteStatus, getByApplicationId } from "../services/statusHistoryService"
 import { ApplicationStatus } from "../types/ApplicationStatus"
 import { getApplicationInsightsAsync } from "../services/aiService"
+import type { ApplicationInsightsResults } from "../types/ApplicationInsightsResults"
 import Swal from "sweetalert2"
 
 export function ApplicationDetailPage(){
@@ -14,7 +15,7 @@ export function ApplicationDetailPage(){
     const [statusHistory, setStatusHistory] = useState<StatusHistory[]>([])
     const [newStatus, setNewStatus] = useState<ApplicationStatus>(ApplicationStatus.Applied)
     const [newNotes, setNewNotes] = useState('')
-    const [ insights, setInsights ] = useState<string | undefined>(undefined)
+    const [ insights, setInsights ] = useState<ApplicationInsightsResults | undefined>(undefined)
     const [ loading, setLoading ] = useState(true)
     const [loadingInsights, setLoadingInsights] = useState(false)
 
@@ -163,10 +164,28 @@ export function ApplicationDetailPage(){
                         }
                     </button>
                 </div>
-                {insights
-                    ? <p style={{ whiteSpace: 'pre-line' }}>{insights}</p>
-                    : <p className="text-muted">Click "Get Insights" to analyse this application.</p>
-                }
+                {insights ? (
+                    <div className="d-flex flex-column gap-3">
+                        <div>
+                            <h6 className="fw-semibold mb-1">Overview</h6>
+                            <p className="mb-0">{insights.overview}</p>
+                        </div>
+                        <div>
+                            <h6 className="fw-semibold mb-1">What to Expect</h6>
+                            <p className="mb-0">{insights.whatToExpect}</p>
+                        </div>
+                        <div>
+                            <h6 className="fw-semibold mb-1">Recommendations</h6>
+                            <ul className="mb-0 ps-3">
+                                {insights.recommendations.map((r, i) => (
+                                    <li key={i}>{r}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                ) : (
+                    <p className="text-muted">Click "Get Insights" to analyse this application.</p>
+                )}
             </div>
         </div>
     </>

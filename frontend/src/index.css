@@ -1,10 +1,134 @@
 body {
   margin: 0;
-  background-color: #f0f2f5;
+  background-color: #f8fafc;
   font-family: 'Poppins', sans-serif;
   --bs-body-font-family: 'Poppins', sans-serif;
+  color: #1e293b;
 }
 
 #root {
   min-height: 100vh;
+}
+
+/* Cards */
+.card {
+  border-radius: 14px !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Application cards — left accent + hover lift */
+.app-card {
+  border-left: 4px solid #3b82f6 !important;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.app-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.12) !important;
+}
+
+/* Buttons */
+.btn {
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.btn-primary {
+  background-color: #3b82f6;
+  border-color: #3b82f6;
+}
+
+.btn-primary:hover,
+.btn-primary:active {
+  background-color: #2563eb;
+  border-color: #2563eb;
+}
+
+.btn-primary:focus-visible {
+  background-color: #2563eb;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+.btn-outline-primary {
+  color: #3b82f6;
+  border-color: #3b82f6;
+}
+
+.btn-outline-primary:hover {
+  background-color: #3b82f6;
+  border-color: #3b82f6;
+}
+
+/* Form controls */
+.form-control,
+.form-select {
+  border-radius: 8px;
+  border-color: #e2e8f0;
+  color: #1e293b;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Badges — soft pill style */
+.badge {
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-weight: 500;
+  font-size: 0.72rem;
+}
+
+.badge.bg-primary {
+  background-color: #dbeafe !important;
+  color: #1d4ed8;
+}
+
+.badge.bg-warning {
+  background-color: #fef3c7 !important;
+  color: #92400e;
+}
+
+.badge.bg-success {
+  background-color: #d1fae5 !important;
+  color: #065f46;
+}
+
+.badge.bg-danger {
+  background-color: #fee2e2 !important;
+  color: #991b1b;
+}
+
+/* Navbar */
+nav.app-navbar {
+  background-color: white;
+  border-bottom: 1px solid #f1f5f9;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+/* Auth pages */
+.auth-wrapper {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f0f7ff 0%, #f8fafc 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.auth-logo {
+  width: 44px;
+  height: 44px;
+  background: #3b82f6;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 20px;
 }

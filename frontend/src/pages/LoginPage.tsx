@@ -26,37 +26,37 @@ export function LoginPage(){
     }
 
     return (
-        <div className="d-flex align-items-center justify-content-center vh-100">
-
-            <div className="card shadow p-4" style={{width: '400px'}}>
-            <h4 className=" text-center mb-1 fw-bold">Job Tracker</h4>
-            <h2 className="mb-4">Login</h2>
-            <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                    <label className="form-label">Email</label>
-                    <input 
-                        type="email" 
-                        className="form-control"
-                        value={email}
-                        onChange={e => setEmail(e.target.value)}/>
+        <div className="auth-wrapper">
+            <div className="card p-4" style={{ width: '400px' }}>
+                <div className="text-center mb-4">
+                    <div className="auth-logo mb-3">J</div>
+                    <h5 className="fw-bold mb-0" style={{ color: '#1e293b' }}>Job Tracker</h5>
                 </div>
-                <div className="mb-3">
-                    <label className="form-label">Password</label>
-                    <input 
-                        type="password" 
-                        className="form-control"
-                        value={password}
-                        onChange={e => setPassword(e.target.value)}/>
-                </div>
-                <button type="submit" className="btn btn-primary w-100">Ingresar</button>
-                {error && <p className="text-danger mt-2">{error}</p>}
-
-                <p className="text-center mt-3">
-                    Don't have an account? <a href="/register" className="text-decoration-none fw-bold  ">Register</a>
-                </p>
-            </form>
+                <h4 className="fw-bold mb-4">Sign in</h4>
+                <form onSubmit={handleSubmit}>
+                    <div className="mb-3">
+                        <label className="form-label fw-medium">Email</label>
+                        <input
+                            type="email"
+                            className="form-control"
+                            value={email}
+                            onChange={e => setEmail(e.target.value)} />
+                    </div>
+                    <div className="mb-3">
+                        <label className="form-label fw-medium">Password</label>
+                        <input
+                            type="password"
+                            className="form-control"
+                            value={password}
+                            onChange={e => setPassword(e.target.value)} />
+                    </div>
+                    <button type="submit" className="btn btn-primary w-100 mt-1">Sign in</button>
+                    {error && <p className="text-danger mt-2 mb-0 small">{error}</p>}
+                    <p className="text-center mt-3 mb-0 small" style={{ color: '#64748b' }}>
+                        Don't have an account? <a href="/register" className="text-decoration-none fw-semibold" style={{ color: '#3b82f6' }}>Register</a>
+                    </p>
+                </form>
             </div>
-
         </div>
     )
 }
