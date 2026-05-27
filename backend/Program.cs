@@ -79,6 +79,11 @@ if (app.Environment.IsDevelopment())
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.Map("/health", async context =>
+{
+    await context.Response.WriteAsJsonAsync(new { status = "healthy" });
+});
+
 app.MapControllers();
 
 using (var scope = app.Services.CreateScope())
