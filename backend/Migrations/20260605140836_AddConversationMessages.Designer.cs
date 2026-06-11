@@ -3,25 +3,26 @@ using System;
 using JobTracker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using Pgvector;
 
 #nullable disable
 
 namespace JobTracker.Migrations
 {
     [DbContext(typeof(JobTrackerContext))]
-    partial class JobTrackerContextModelSnapshot : ModelSnapshot
+    [Migration("20260605140836_AddConversationMessages")]
+    partial class AddConversationMessages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "10.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "vector");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("JobTracker.Models.AIAnalysis", b =>
@@ -120,70 +121,6 @@ namespace JobTracker.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ConversationMessages");
-                });
-
-            modelBuilder.Entity("JobTracker.Models.CvChunk", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Vector>("Embedding")
-                        .IsRequired()
-                        .HasColumnType("vector(768)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CvChunks");
-                });
-
-            modelBuilder.Entity("JobTracker.Models.EvaluationScore", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<float>("Actionability")
-                        .HasColumnType("real");
-
-                    b.Property<float>("Average")
-                        .HasColumnType("real");
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<float>("Grounding")
-                        .HasColumnType("real");
-
-                    b.Property<string>("Question")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<float>("Relevance")
-                        .HasColumnType("real");
-
-                    b.Property<string>("Response")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<float>("Scope")
-                        .HasColumnType("real");
-
-                    b.Property<float>("Tone")
-                        .HasColumnType("real");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("EvaluationScores");
                 });
 
             modelBuilder.Entity("JobTracker.Models.StatusHistory", b =>

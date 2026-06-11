@@ -3,6 +3,7 @@ using System;
 using JobTracker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Pgvector;
@@ -12,9 +13,11 @@ using Pgvector;
 namespace JobTracker.Migrations
 {
     [DbContext(typeof(JobTrackerContext))]
-    partial class JobTrackerContextModelSnapshot : ModelSnapshot
+    [Migration("20260611123731_AddEvaluationScoreTable")]
+    partial class AddEvaluationScoreTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -152,36 +155,26 @@ namespace JobTracker.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<float>("Actionability")
-                        .HasColumnType("real");
-
-                    b.Property<float>("Average")
-                        .HasColumnType("real");
+                    b.Property<int>("ApplicationId")
+                        .HasColumnType("integer");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<float>("Grounding")
-                        .HasColumnType("real");
 
                     b.Property<string>("Question")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<float>("Relevance")
-                        .HasColumnType("real");
-
                     b.Property<string>("Response")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<float>("Scope")
-                        .HasColumnType("real");
-
-                    b.Property<float>("Tone")
+                    b.Property<float>("Score")
                         .HasColumnType("real");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationId");
 
                     b.ToTable("EvaluationScores");
                 });
@@ -262,6 +255,17 @@ namespace JobTracker.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("JobTracker.Models.EvaluationScore", b =>
+                {
+                    b.HasOne("JobTracker.Models.Application", "Application")
+                        .WithMany()
+                        .HasForeignKey("ApplicationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Application");
                 });
 
             modelBuilder.Entity("JobTracker.Models.StatusHistory", b =>

@@ -3,6 +3,7 @@ using System;
 using JobTracker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Pgvector;
@@ -12,9 +13,11 @@ using Pgvector;
 namespace JobTracker.Migrations
 {
     [DbContext(typeof(JobTrackerContext))]
-    partial class JobTrackerContextModelSnapshot : ModelSnapshot
+    [Migration("20260611143438_ModifyTableEvaluationScore")]
+    partial class ModifyTableEvaluationScore
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -155,6 +158,9 @@ namespace JobTracker.Migrations
                     b.Property<float>("Actionability")
                         .HasColumnType("real");
 
+                    b.Property<int>("ApplicationId")
+                        .HasColumnType("integer");
+
                     b.Property<float>("Average")
                         .HasColumnType("real");
 
@@ -182,6 +188,8 @@ namespace JobTracker.Migrations
                         .HasColumnType("real");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationId");
 
                     b.ToTable("EvaluationScores");
                 });
@@ -262,6 +270,17 @@ namespace JobTracker.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("JobTracker.Models.EvaluationScore", b =>
+                {
+                    b.HasOne("JobTracker.Models.Application", "Application")
+                        .WithMany()
+                        .HasForeignKey("ApplicationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Application");
                 });
 
             modelBuilder.Entity("JobTracker.Models.StatusHistory", b =>

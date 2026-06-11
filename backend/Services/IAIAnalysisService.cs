@@ -6,5 +6,6 @@ namespace JobTracker.Services
     {
         Task<CvMatchResults> CvMatchAsync(IFormFile? cvFile, string? cvText, string jobOfferText);
         Task<ApplicationInsightsResults> GetApplicationInsightsAsync(int applicationId, int userId);
+        IAsyncEnumerable<string> GetJobCoachStreamAsync(string question, int userId, string conversationId);
     }
 }

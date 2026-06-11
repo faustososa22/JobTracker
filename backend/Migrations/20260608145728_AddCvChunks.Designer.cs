@@ -3,6 +3,7 @@ using System;
 using JobTracker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Pgvector;
@@ -12,9 +13,11 @@ using Pgvector;
 namespace JobTracker.Migrations
 {
     [DbContext(typeof(JobTrackerContext))]
-    partial class JobTrackerContextModelSnapshot : ModelSnapshot
+    [Migration("20260608145728_AddCvChunks")]
+    partial class AddCvChunks
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -142,48 +145,6 @@ namespace JobTracker.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CvChunks");
-                });
-
-            modelBuilder.Entity("JobTracker.Models.EvaluationScore", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<float>("Actionability")
-                        .HasColumnType("real");
-
-                    b.Property<float>("Average")
-                        .HasColumnType("real");
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<float>("Grounding")
-                        .HasColumnType("real");
-
-                    b.Property<string>("Question")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<float>("Relevance")
-                        .HasColumnType("real");
-
-                    b.Property<string>("Response")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<float>("Scope")
-                        .HasColumnType("real");
-
-                    b.Property<float>("Tone")
-                        .HasColumnType("real");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("EvaluationScores");
                 });
 
             modelBuilder.Entity("JobTracker.Models.StatusHistory", b =>
