@@ -9,6 +9,7 @@ import { ProtectedRoute } from './components/ProtectedRoute'
 import { CvMatchPage } from './pages/CvMatchPage'
 import { EditApplicationPage } from './pages/EditApplicationPage'
 import { HomePage } from './pages/HomePage'
+import JobCoachPage from './pages/JobCoachPage'
 
 function AppLayout() {
     const location = useLocation()
@@ -24,6 +25,7 @@ function AppLayout() {
             <Route path='/applications/:id/edit' element={<ProtectedRoute><EditApplicationPage/></ProtectedRoute>}/>
             <Route path="/applications/:id" element={<ProtectedRoute><ApplicationDetailPage/></ProtectedRoute>} />
             <Route path="/cv-match" element={<ProtectedRoute><CvMatchPage/></ProtectedRoute>} />
+            <Route path="/job-coach" element={<ProtectedRoute><JobCoachPage/></ProtectedRoute>} />
             <Route path="/" element={<HomePage/>} />
         </Routes>
     </>

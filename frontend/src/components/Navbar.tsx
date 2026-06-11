@@ -20,6 +20,7 @@ export function Navbar(){
             <div className="navbar-nav me-auto ms-4">
                 <a className="nav-link" href="/applications" style={{ color: 'var(--text-muted)', fontSize: '14px', fontWeight: 500 }}>Applications</a>
                 <a className="nav-link" href="/cv-match" style={{ color: 'var(--text-muted)', fontSize: '14px', fontWeight: 500 }}>CV Match</a>
+                <a className="nav-link" href="/job-coach" style={{ color: 'var(--text-muted)', fontSize: '14px', fontWeight: 500 }}>Job Coach</a>
             </div>
             <button
                 className="btn btn-sm"

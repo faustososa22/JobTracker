@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { CvMatchResults } from "../types/CvMatchResults";
-import { cvMatchAsync } from "../services/aiService";
+import { cvMatchAsync, indexCvAsync } from "../services/aiService";
+import Swal from "sweetalert2";
 
 export function CvMatchPage(){
     const [jobOfferText, setJobOfferText] = useState('')
@@ -23,6 +24,17 @@ export function CvMatchPage(){
             setResult(response.data)
         }
         setLoading(false)
+    }
+
+    const handleSaveCv = async () => {
+        await indexCvAsync(cvText);
+        Swal.fire({
+            icon: 'success',
+            title: 'CV saved',
+            text: 'Your CV is now available for the Job Coach.',
+            timer: 2000,
+            showConfirmButton: false
+        });
     }
 
     const scoreColor = result
@@ -75,6 +87,11 @@ export function CvMatchPage(){
                             : 'Analyze'
                         }
                     </button>
+                    {!usePdf && cvText && (
+                        <button type="button" className="btn btn-outline-secondary ms-2" onClick={handleSaveCv} style={{ padding: '9px 24px' }}>
+                            Save CV for Job Coach
+                        </button>
+                    )}
                 </form>
             </div>
 
