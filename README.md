@@ -23,6 +23,10 @@ A full-stack web app to manage your job search. Track applications, monitor stat
 - PdfPig (PDF text extraction)
 - Scalar (API documentation)
 
+**Testing**
+- xUnit (unit testing framework)
+- Moq (mocking library)
+
 **Infrastructure**
 - Database: PostgreSQL with pgvector extension (Docker locally)
 - Frontend: Vercel
