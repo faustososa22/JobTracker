@@ -19,31 +19,35 @@ export default function JobCoachPage() {
     }
 
     return (
-        <div className="container mt-4" style={{ maxWidth: '800px' }}>
-            <h2 className="mb-4">Job Coach</h2>
-            <form onSubmit={handleSubmit} className="d-flex gap-2">
-                <input
-                    className="form-control"
-                    value={question}
-                    onChange={e => setQuestion(e.target.value)}
-                    placeholder="Ask something about your job search..."
-                    disabled={loading}
-                />
-                <button className="btn btn-primary" disabled={loading} style={{ whiteSpace: 'nowrap' }}>
-                    {loading ? 'Thinking...' : 'Ask'}
-                </button>
-            </form>
+        <div className="container mt-4" style={{ maxWidth: '800px', paddingTop: '32px', paddingBottom: '48px'}}>
+            <div className="card p-4" mb-3>
+                <h3 className="mb-4">Job Coach</h3>
+                <form onSubmit={handleSubmit} className="d-flex gap-2">
+                    <input
+                        className="form-control"
+                        value={question}
+                        onChange={e => setQuestion(e.target.value)}
+                        placeholder="Ask something about your job search..."
+                        disabled={loading}
+                    />
+                    <button className="btn btn-primary" disabled={loading} style={{ whiteSpace: 'nowrap' }}>
+                        {loading ? 'Thinking...' : 'Ask'}
+                    </button>
+                </form>
+            </div>
             {response && (
-                <div className="mt-4 p-4 border rounded" style={{ backgroundColor: '#f8f9fa' }}>
-                    <ReactMarkdown
-                        components={{
-                            h1: ({children}) => <p style={{ fontWeight: 700, fontSize: '18px', marginBottom: '4px' }}>{children}</p>,
-                            h2: ({children}) => <p style={{ fontWeight: 700, fontSize: '17px', marginBottom: '4px' }}>{children}</p>,
-                            h3: ({children}) => <p style={{ fontWeight: 600, fontSize: '16px', marginBottom: '4px' }}>{children}</p>,
-                        }}
-                    >
-                        {response}
-                    </ReactMarkdown>
+                <div className="card p-4 mt-3">
+                    <div className="p-4 border rounded" style={{ backgroundColor: '#f8f9fa' }}>
+                        <ReactMarkdown
+                            components={{
+                                h1: ({children}) => <p style={{ fontWeight: 700, fontSize: '18px', marginBottom: '4px' }}>{children}</p>,
+                                h2: ({children}) => <p style={{ fontWeight: 700, fontSize: '17px', marginBottom: '4px' }}>{children}</p>,
+                                h3: ({children}) => <p style={{ fontWeight: 600, fontSize: '16px', marginBottom: '4px' }}>{children}</p>,
+                            }}
+                        >
+                            {response}
+                        </ReactMarkdown>
+                    </div>
                 </div>
             )}
         </div>
