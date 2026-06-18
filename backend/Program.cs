@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.AI;
 using Microsoft.Extensions.VectorData;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.SemanticKernel.ChatCompletion;
 using OpenAI.VectorStores;
 using Scalar.AspNetCore;
 
@@ -39,6 +40,11 @@ builder.Services.AddScoped<ICvMatchOrquestator, CvMatchOrquestator>();
 builder.Services.AddScoped<IEvaluationScoreRepository, EvaluationScoreRepository>();
 //Anthropic API client
 builder.Services.AddScoped(sp => new AnthropicClient { ApiKey = builder.Configuration["Anthropic:ApiKey"]! });
+builder.Services.AddScoped<IChatCompletionService>(sp =>
+{
+    var anthropicClient = sp.GetRequiredService<AnthropicClient>();
+    return anthropicClient.AsIChatClient("claude-haiku-4-5-20251001").AsChatCompletionService();
+});
 
 // Ollama embedding generator
 builder.Services.AddOllamaEmbeddingGenerator("nomic-embed-text", new Uri("http://localhost:11434"));

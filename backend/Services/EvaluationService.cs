@@ -1,7 +1,5 @@
 using System.Text.Json;
-using Anthropic;
 using JobTracker.DTOs;
-using Microsoft.Extensions.AI;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 
@@ -9,34 +7,31 @@ namespace JobTracker.Services
 {
     public class EvaluationService : IEvaluationService
     {
-        private readonly AnthropicClient _anthropicClient;
+        private readonly IChatCompletionService _chatCompletionService;
 
-        public EvaluationService(AnthropicClient anthropicClient)
+        public EvaluationService(IChatCompletionService chatCompletionService)
         {
-            this._anthropicClient = anthropicClient;
+            this._chatCompletionService = chatCompletionService;
         }
         public async Task<EvaluationResult> EvaluateAsync(string question, string response)
         {
-            IChatClient chatClient = _anthropicClient.AsIChatClient("claude-haiku-4-5-20251001");
-            var builder = Kernel.CreateBuilder();
-            var cs = chatClient.AsChatCompletionService();
-            builder.Services.AddSingleton<IChatCompletionService>(cs);
-            var kernel = builder.Build();
-
             var chatHistory = new ChatHistory(BuildEvaluatorSystemPrompt());
             chatHistory.AddUserMessage($"Question: {question}\n\nJob Coach Response: {response}");
-            var chatService = kernel.GetRequiredService<IChatCompletionService>();
 
-            var result = await chatService.GetChatMessageContentAsync(chatHistory, kernel: kernel);
+            var result = await _chatCompletionService.GetChatMessageContentAsync(chatHistory);
             
             var cleaned = (result?.Content ?? string.Empty).Trim();
 
-            if (cleaned.StartsWith("```"))
+            if (cleaned.StartsWith("```") && cleaned.LastIndexOf("```") > 0)
             {
                 cleaned = cleaned.Substring(cleaned.IndexOf('\n') + 1);
                 cleaned = cleaned.Substring(0, cleaned.LastIndexOf("```")).Trim();
             }
 
+            if (string.IsNullOrEmpty(cleaned))
+            {
+                return new EvaluationResult();
+            }
             var finalResult = JsonSerializer.Deserialize<EvaluationResult>(cleaned, new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
